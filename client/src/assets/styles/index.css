@@ -1,2 +1,7 @@
 @import "reset.css";
 @import "tailwind.css";
+
+
+#root{
+  @apply bg-blue-500
+}
