@@ -1,2 +1,6 @@
 @import "reset.css";
 @import "tailwind.css";
+
+#root {
+   @apply bg-lightV2;
+}

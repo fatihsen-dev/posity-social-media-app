@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { User, userValidation } from "../models/user.js";
 import Joi from "joi";
+import jwt from "jsonwebtoken";
 
 export const index = async (req, res) => {
    try {
@@ -31,12 +32,18 @@ export const login = async (req, res) => {
 
       const { _id, name, email, admin } = user;
 
-      return res.send({ id: _id, name, email, admin });
+      const token = jwt.sign({ _id, name, email, admin }, "testKey");
+
+      await User.findByIdAndUpdate(_id, { token });
+
+      return res.send({ id: _id, name, email, admin, token });
    } catch (err) {
       console.log(err);
       return res.status(404).send({ message: "User not found" });
    }
 };
+
+export const userControl = async (req, res) => {};
 
 export const register = async (req, res) => {
    const { error } = userValidation(req.body);
@@ -50,7 +57,7 @@ export const register = async (req, res) => {
       console.log(userControl);
       if (userControl) {
          return res.status(302).send({
-            message: "There is a registered member with this email address.",
+            message: "There is such a member",
          });
       }
 

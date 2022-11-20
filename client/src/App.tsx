@@ -1,88 +1,55 @@
-import axios from "axios";
-import { login, register } from "./axios";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Main from "./pages";
+import Home from "./pages/home/Home";
+import Login from "./pages/auth/login/Login";
+import Register from "./pages/auth/register/Register";
+import Profile from "./pages/profile/Profile";
+import Message from "./pages/message/Message";
+import Groups from "./pages/groups/Groups";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "./store/index";
+import NotFound from "./pages/NotFound";
+import { Toaster } from "react-hot-toast";
+import { userControl } from "./store/auth/user";
 
 function App() {
-   const loginHandle = async (e: any) => {
-      e.preventDefault();
-      const { email, password } = e.target;
+   const { user } = useSelector((state: RootState) => state.userData);
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
 
-      try {
-         const res = await login({
-            email: email.value,
-            password: password.value,
-         });
-         console.log(res.data);
-      } catch (error) {
-         console.log(error);
-      }
-   };
-   const registerHandle = async (e: any) => {
-      e.preventDefault();
-      const { name, email, password } = e.target;
+   useEffect(() => {
+      navigate("/login");
 
-      try {
-         const data = await register({
-            name: name.value,
-            email: email.value,
-            password: password.value,
-         });
+      dispatch(userControl());
+   }, []);
 
-         console.log(data);
-      } catch (error) {
-         console.log(error);
-      }
-   };
    return (
-      <div className='container h-full flex justify-center items-center gap-10'>
-         <form
-            className='flex flex-col gap-3 bg-blue-100 p-5 rounded'
-            onSubmit={loginHandle}>
-            <input
-               className='rounded p-1'
-               name='email'
-               type='email'
-               placeholder='E-mail'
-            />
-            <input
-               className='rounded p-1'
-               name='password'
-               type='password'
-               placeholder='Password'
-            />
-            <button
-               className='bg-blue-500 rounded py-1 text-white hover:bg-blue-500/90'
-               type='submit'>
-               Login
-            </button>
-         </form>
-         <form
-            className='flex flex-col gap-3 bg-blue-100 p-5 rounded'
-            onSubmit={registerHandle}>
-            <input
-               className='rounded p-1'
-               name='name'
-               type='text'
-               placeholder='Full name'
-            />
-            <input
-               className='rounded p-1'
-               name='email'
-               type='email'
-               placeholder='E-mail'
-            />
-            <input
-               className='rounded p-1'
-               name='password'
-               type='password'
-               placeholder='Password'
-            />
-            <button
-               className='bg-blue-500 rounded py-1 text-white hover:bg-blue-500/90'
-               type='submit'>
-               Register
-            </button>
-         </form>
-      </div>
+      <>
+         <div className='h-full'>
+            <Routes>
+               {user ? (
+                  <Route path='/' element={<Main />}>
+                     <Route index element={<Home />} />
+                     <Route path='user/:username' element={<Profile />} />
+                     <Route path='message' element={<Message />} />
+                     <Route path='groups' element={<Groups />} />
+                  </Route>
+               ) : (
+                  <>
+                     {!user && (
+                        <>
+                           <Route path='/login' element={<Login />} />
+                           <Route path='/register' element={<Register />} />
+                        </>
+                     )}
+                  </>
+               )}
+               <Route path='*' element={<NotFound />} />
+            </Routes>
+         </div>
+         <Toaster position='top-left' reverseOrder={false} />
+      </>
    );
 }
 
