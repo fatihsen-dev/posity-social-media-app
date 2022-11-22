@@ -11,7 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./store/index";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "react-hot-toast";
-import { userControl } from "./store/auth/user";
+import { userLogin } from "./store/auth/user";
+import { Control } from "./axios";
+import Loading from "./components/Loading";
 
 function App() {
    const { user } = useSelector((state: RootState) => state.userData);
@@ -20,8 +22,23 @@ function App() {
 
    useEffect(() => {
       navigate("/login");
+      if (localStorage.getItem("token")) {
+         (async () => {
+            try {
+               const response = await Control({
+                  token: localStorage.getItem("token"),
+               });
 
-      dispatch(userControl());
+               dispatch(userLogin(response.data));
+               navigate("/");
+            } catch (error) {
+               console.log(error);
+               dispatch(userLogin(false));
+            }
+         })();
+      } else {
+         dispatch(userLogin(false));
+      }
    }, []);
 
    return (
@@ -37,16 +54,17 @@ function App() {
                   </Route>
                ) : (
                   <>
-                     {!user && (
+                     {user === false && (
                         <>
                            <Route path='/login' element={<Login />} />
                            <Route path='/register' element={<Register />} />
+                           <Route path='*' element={<NotFound />} />
                         </>
                      )}
                   </>
                )}
-               <Route path='*' element={<NotFound />} />
             </Routes>
+            {user === null && <Loading />}
          </div>
          <Toaster position='top-left' reverseOrder={false} />
       </>

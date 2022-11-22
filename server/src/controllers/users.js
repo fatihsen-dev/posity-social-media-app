@@ -43,7 +43,32 @@ export const login = async (req, res) => {
    }
 };
 
-export const userControl = async (req, res) => {};
+export const userControl = async (req, res) => {
+   const { token } = req.body;
+   const decoded = jwt.verify(token, "testKey", (error, decoded) => {
+      if (error) {
+         return { message: "Error" };
+      }
+      return decoded;
+   });
+
+   try {
+      const user = await User.findById(decoded._id);
+      if (user.token == token) {
+         console.log(token);
+         const user = await User.findById(decoded._id).select(
+            "_id name email admin token"
+         );
+         return res.send(user);
+      } else {
+         console.log("test 1");
+         return res.status(406).send({ message: "Token invalid" });
+      }
+   } catch (error) {
+      console.log(error);
+      return res.status(406).send({ message: "Token invalid" });
+   }
+};
 
 export const register = async (req, res) => {
    const { error } = userValidation(req.body);

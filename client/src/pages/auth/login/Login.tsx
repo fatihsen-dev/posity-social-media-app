@@ -19,8 +19,6 @@ export default function Login() {
             email: email.value,
             password: password.value,
          });
-
-         console.log(response.data);
          toast.success("Login success");
          dispatch(userLogin(response.data));
          navigate("/");

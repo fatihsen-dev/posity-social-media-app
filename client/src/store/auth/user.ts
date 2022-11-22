@@ -6,26 +6,24 @@ export interface userState {
 }
 
 const initialState: userState = {
-   user: false,
+   user: null,
 };
 
 export const userReducer = createSlice({
    name: "userReducer",
    initialState,
    reducers: {
-      userLogin: (state, action: PayloadAction<object>) => {
+      userLogin: (state, action: PayloadAction<any>) => {
          state.user = action.payload;
-         localStorage.setItem("loginToken", JSON.stringify(state.user.token));
-      },
-      userControl: (state) => {
-         console.log(state.user);
+         localStorage.setItem("token", state.user.token);
       },
       userLogout: (state) => {
          state.user = false;
+         localStorage.removeItem("token");
       },
    },
 });
 
-export const { userLogin, userLogout, userControl } = userReducer.actions;
+export const { userLogin, userLogout } = userReducer.actions;
 
 export default userReducer.reducer;
