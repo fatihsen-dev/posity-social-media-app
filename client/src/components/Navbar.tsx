@@ -2,11 +2,15 @@ import { TbMessageCircle } from "react-icons/tb";
 import { FaUserFriends } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { userLogout } from "../store/auth/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export default function Navbar() {
+   const [searchValue, setSearchValue] = useState("");
+   const [users, setUsers] = useState([]);
+   const { user, allUser } = useSelector((state: RootState) => state.userData);
    const dispatch = useDispatch();
    const navigate = useNavigate();
 
@@ -15,6 +19,22 @@ export default function Navbar() {
       navigate("/login");
       localStorage.removeItem("loginToken");
    };
+   const searchHandle = (e: any) => {
+      setSearchValue(e.target.value);
+      const result = allUser.filter((user: any, index: any) => {
+         return (
+            index < 6 && user.name.toLowerCase().includes(e.target.value.toLowerCase())
+         );
+      });
+      setUsers(result);
+   };
+   const focusClear = (e: any) => {
+      const body = document.body;
+      body.setAttribute("tabindex", "0");
+      body.focus();
+      body.removeAttribute("tabindex");
+      setSearchValue("");
+   };
 
    return (
       <div className='bg-mainDarkV1'>
@@ -22,12 +42,33 @@ export default function Navbar() {
             <NavLink to='/' className='text-[26px] font-semibold leading-8'>
                Posity
             </NavLink>
-            <input
-               className='flex-[.4] bg-mainDarkV2 rounded-sm text-lightV4 px-2 py-1.5 font-normal placeholder-lightV1/80'
-               type='text'
-               placeholder='Search user...'
-            />
-            <div className='flex items-center gap-3'>
+            <div tabIndex={0} className='flex-[.4] relative h-auto group'>
+               <input
+                  value={searchValue}
+                  onChange={searchHandle}
+                  className='w-full bg-mainDarkV2 rounded-sm text-lightV4 px-2 py-1.5 font-normal placeholder-lightV1/80'
+                  type='text'
+                  placeholder='Search user...'
+               />
+               <ul className='group-focus-within:flex hidden absolute w-full rounded-b-sm left-0 top-8 bg-mainDarkV1 flex-col'>
+                  {users &&
+                     users.map((user: any, key) => (
+                        <NavLink
+                           onClick={focusClear}
+                           to={`user/${user._id}`}
+                           className='flex items-center gap-3 p-2 cursor-pointer hover:bg-mainDarkV2 transition-colors'
+                           key={key}>
+                           <img
+                              className='w-6 h-6 object-cover rounded-full'
+                              src={user.avatar}
+                              alt={user.name}
+                           />
+                           <span className='flex-1'>{user.name}</span>
+                        </NavLink>
+                     ))}
+               </ul>
+            </div>
+            <div className='flex items-center gap-3 z-10'>
                <NavLink
                   to='message'
                   className='w-9 h-9 bg-mainDarkV2 rounded-full grid place-items-center'>
@@ -43,8 +84,8 @@ export default function Navbar() {
                      <Menu.Button className='flex rounded-full bg-gray-800 text-sm'>
                         <img
                            className='h-9 w-9 rounded-full'
-                           src='https://avatars.githubusercontent.com/u/20463385?v=4'
-                           alt=''
+                           src={user.avatar}
+                           alt={user.name}
                         />
                      </Menu.Button>
                   </div>
@@ -60,7 +101,7 @@ export default function Navbar() {
                         <Menu.Item>
                            {({ active }) => (
                               <NavLink
-                                 to='user/fatih'
+                                 to={`user/${user._id}`}
                                  className='block font-medium px-4 py-2 text-sm text-gray-700'>
                                  Your Profile
                               </NavLink>

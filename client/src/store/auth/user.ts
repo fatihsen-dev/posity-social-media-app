@@ -3,10 +3,14 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface userState {
    user: any;
+   allUser: any;
+   userProfileData: any;
 }
 
 const initialState: userState = {
    user: null,
+   allUser: null,
+   userProfileData: null,
 };
 
 export const userReducer = createSlice({
@@ -17,6 +21,12 @@ export const userReducer = createSlice({
          state.user = action.payload;
          localStorage.setItem("token", state.user.token);
       },
+      allUserFunc: (state, action: PayloadAction<any>) => {
+         state.allUser = action.payload;
+      },
+      userProfileDataFunc: (state, action: PayloadAction<any>) => {
+         state.userProfileData = action.payload;
+      },
       userLogout: (state) => {
          state.user = false;
          localStorage.removeItem("token");
@@ -24,6 +34,7 @@ export const userReducer = createSlice({
    },
 });
 
-export const { userLogin, userLogout } = userReducer.actions;
+export const { userLogin, userLogout, allUserFunc, userProfileDataFunc } =
+   userReducer.actions;
 
 export default userReducer.reducer;

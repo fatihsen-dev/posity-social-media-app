@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 import Image from "../../../assets/images/login.jpg";
 import toast from "react-hot-toast";
-import { login } from "../../../axios";
+import { getAllUsers, login } from "../../../axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { userLogin } from "../../../store/auth/user";
+import { allUserFunc, userLogin } from "../../../store/auth/user";
 
 export default function Login() {
    const navigate = useNavigate();
@@ -22,6 +22,9 @@ export default function Login() {
          toast.success("Login success");
          dispatch(userLogin(response.data));
          navigate("/");
+
+         const allUsersResponse = await getAllUsers();
+         dispatch(allUserFunc(allUsersResponse.data));
       } catch (error: any) {
          console.log(error.response);
          return toast.error(error.response.data.message);

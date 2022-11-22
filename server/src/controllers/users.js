@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const index = async (req, res) => {
    try {
-      const users = await User.find().select("name email admin");
+      const users = await User.find().select("name avatar");
       return res.status(200).send(users);
    } catch (err) {
       return res.status(500).send({ message: "Server Error!" });
@@ -30,13 +30,13 @@ export const login = async (req, res) => {
          return res.send({ message: "Wrong password" });
       }
 
-      const { _id, name, email, admin } = user;
+      const { _id, name, email, admin, avatar } = user;
 
       const token = jwt.sign({ _id, name, email, admin }, "testKey");
 
       await User.findByIdAndUpdate(_id, { token });
 
-      return res.send({ id: _id, name, email, admin, token });
+      return res.send({ id: _id, name, email, admin, token, avatar });
    } catch (err) {
       console.log(err);
       return res.status(404).send({ message: "User not found" });
@@ -57,7 +57,7 @@ export const userControl = async (req, res) => {
       if (user.token == token) {
          console.log(token);
          const user = await User.findById(decoded._id).select(
-            "_id name email admin token"
+            "_id name email admin token avatar"
          );
          return res.send(user);
       } else {
@@ -75,11 +75,10 @@ export const register = async (req, res) => {
    if (error) {
       return res.status(400).send({ message: error.details[0].message });
    }
-   const { name, email, password } = req.body;
+   const { name, email, password, avatar } = req.body;
 
    try {
       const userControl = await User.findOne({ email: email });
-      console.log(userControl);
       if (userControl) {
          return res.status(302).send({
             message: "There is such a member",
@@ -92,6 +91,7 @@ export const register = async (req, res) => {
          name,
          email,
          password: hashedPassword,
+         avatar: avatar.length > 0 ? avatar : null,
       });
 
       await user.save();
@@ -99,5 +99,19 @@ export const register = async (req, res) => {
    } catch (err) {
       console.log(err);
       return res.status(500).send({ message: "Server Error!" });
+   }
+};
+
+export const getOneUser = async (req, res) => {
+   const { userid } = req.params;
+
+   try {
+      const user = await User.findById(userid).select(
+         "name email avatar admin createdAt"
+      );
+      return res.send(user);
+   } catch (error) {
+      console.log(error);
+      return res.send({ message: "ID is invalid" });
    }
 };

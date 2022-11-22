@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./store/index";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "react-hot-toast";
-import { userLogin } from "./store/auth/user";
-import { Control } from "./axios";
+import { allUserFunc, userLogin } from "./store/auth/user";
+import { Control, getAllUsers } from "./axios";
 import Loading from "./components/Loading";
 
 function App() {
@@ -21,19 +21,18 @@ function App() {
    const dispatch = useDispatch();
 
    useEffect(() => {
-      navigate("/login");
       if (localStorage.getItem("token")) {
          (async () => {
             try {
-               const response = await Control({
+               const userResponse = await Control({
                   token: localStorage.getItem("token"),
                });
-
-               dispatch(userLogin(response.data));
-               navigate("/");
+               dispatch(userLogin(userResponse.data));
+               const allUsersResponse = await getAllUsers();
+               dispatch(allUserFunc(allUsersResponse.data));
             } catch (error) {
-               console.log(error);
                dispatch(userLogin(false));
+               navigate("/login");
             }
          })();
       } else {
@@ -46,19 +45,21 @@ function App() {
          <div className='h-full'>
             <Routes>
                {user ? (
-                  <Route path='/' element={<Main />}>
-                     <Route index element={<Home />} />
-                     <Route path='user/:username' element={<Profile />} />
-                     <Route path='message' element={<Message />} />
-                     <Route path='groups' element={<Groups />} />
-                  </Route>
+                  <>
+                     <Route path='/' element={<Main />}>
+                        <Route index element={<Home />} />
+                        <Route path='user/:username' element={<Profile />} />
+                        <Route path='message' element={<Message />} />
+                        <Route path='groups' element={<Groups />} />
+                     </Route>
+                     <Route path='*' element={<NotFound />} />
+                  </>
                ) : (
                   <>
                      {user === false && (
                         <>
                            <Route path='/login' element={<Login />} />
                            <Route path='/register' element={<Register />} />
-                           <Route path='*' element={<NotFound />} />
                         </>
                      )}
                   </>

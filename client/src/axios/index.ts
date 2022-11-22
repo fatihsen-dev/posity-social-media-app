@@ -13,4 +13,9 @@ export const Control = async (token: object) =>
 export const register = async (formData: object) =>
    await HTTP.post("/users/register", formData);
 
+export const getAllUsers = async () => await HTTP.get("/users");
+
+export const getProfileUser = async (userid: any) =>
+   await HTTP.get(`/users/getoneuser/${userid}`);
+
 export const getAllPost = async () => await HTTP.post("/posts");
