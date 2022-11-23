@@ -34,6 +34,7 @@ export default function Navbar() {
       body.focus();
       body.removeAttribute("tabindex");
       setSearchValue("");
+      setUsers(allUser);
    };
 
    return (
@@ -71,12 +72,12 @@ export default function Navbar() {
             <div className='flex items-center gap-3 z-10'>
                <NavLink
                   to='message'
-                  className='w-9 h-9 bg-mainDarkV2 rounded-full grid place-items-center'>
+                  className='w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 transition-colors rounded-full grid place-items-center'>
                   <TbMessageCircle className='text-xl' />
                </NavLink>
                <NavLink
                   to='groups'
-                  className='w-9 h-9 bg-mainDarkV2 rounded-full grid place-items-center'>
+                  className='w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 transition-colors rounded-full grid place-items-center'>
                   <FaUserFriends className='text-xl' />
                </NavLink>
                <Menu as='div' className='relative'>
