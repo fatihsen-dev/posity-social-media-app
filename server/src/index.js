@@ -8,6 +8,7 @@ import usersRouter from "./routes/users/users.js";
 import postsRouter from "./routes/posts/posts.js";
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static("src/public"));
 dotenv.config();
 app.use(bodyParser.json());
 app.use(cors());
@@ -18,17 +19,17 @@ app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 
 app.listen(port, () => {
-  console.log(`Server listen ${port}`);
+   console.log(`Server listen ${port}`);
 });
 
 (async () => {
-  try {
-    await mongoose.connect(process.env.DBURL);
-    console.log("connected mongodb");
-  } catch (err) {
-    console.log(err);
-  }
+   try {
+      await mongoose.connect(process.env.DBURL);
+      console.log("connected mongodb");
+   } catch (err) {
+      console.log(err);
+   }
 })();
 app.get("/", (req, res) => {
-  res.send({ message: "success" });
+   res.send({ message: "success" });
 });

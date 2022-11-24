@@ -12,7 +12,7 @@ const postSchema = new Schema(
 
 export const postValidation = (post) => {
   return Joi.object({
-    text: Joi.string().min(8).max(200).required(),
+    text: Joi.string().min(8).max(600).required(),
     image: Joi.string().max(255),
     owner: Joi.string().required(),
   }).validate(post);

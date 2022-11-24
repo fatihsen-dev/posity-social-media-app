@@ -36,7 +36,7 @@ export const login = async (req, res) => {
 
       await User.findByIdAndUpdate(_id, { token });
 
-      return res.send({ id: _id, name, email, admin, token, avatar });
+      return res.send({ _id, name, email, admin, token, avatar });
    } catch (err) {
       console.log(err);
       return res.status(404).send({ message: "User not found" });
@@ -55,13 +55,11 @@ export const userControl = async (req, res) => {
    try {
       const user = await User.findById(decoded._id);
       if (user.token == token) {
-         console.log(token);
          const user = await User.findById(decoded._id).select(
             "_id name email admin token avatar"
          );
          return res.send(user);
       } else {
-         console.log("test 1");
          return res.status(406).send({ message: "Token invalid" });
       }
    } catch (error) {
