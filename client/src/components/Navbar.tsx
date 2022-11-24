@@ -39,8 +39,8 @@ export default function Navbar() {
 
    return (
       <div className='bg-mainDarkV1'>
-         <div className='container h-14 flex w-full items-center justify-between p-2 bg-mainDarkV1 text-lightV1'>
-            <NavLink to='/' className='text-[26px] font-semibold leading-8'>
+         <div className='container h-14 flex w-full justify-between items-center p-2 bg-mainDarkV1 text-lightV1'>
+            <NavLink to='/' className='text-[26px] font-semibold leading-8 flex-[.2]'>
                Posity
             </NavLink>
             <div tabIndex={0} className='flex-[.4] relative h-auto group'>
@@ -69,7 +69,7 @@ export default function Navbar() {
                      ))}
                </ul>
             </div>
-            <div className='flex items-center gap-3 z-10'>
+            <div className='flex items-center gap-3 z-10 flex-[.2] justify-end'>
                <NavLink
                   to='message'
                   className='w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 transition-colors rounded-full grid place-items-center'>

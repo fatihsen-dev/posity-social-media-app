@@ -4,8 +4,8 @@ const Main = () => {
    return (
       <div className='flex flex-col h-full w-full'>
          <Navbar />
-         <div className='overflow-auto'>
-            <div className='container mx-auto px-2'>
+         <div className='overflow-auto h-full'>
+            <div className='container mx-auto h-full'>
                <div className='flex-1'>
                   <Outlet />
                </div>

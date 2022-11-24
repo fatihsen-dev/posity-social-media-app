@@ -12,8 +12,9 @@ import type { RootState } from "./store/index";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "react-hot-toast";
 import { allUserFunc, userLogin } from "./store/auth/user";
-import { Control, getAllUsers } from "./axios";
+import { Control, getAllPost, getAllUsers } from "./axios";
 import Loading from "./components/Loading";
+import { setAllpost } from "./store/posts/post";
 
 function App() {
    const { user } = useSelector((state: RootState) => state.userData);
@@ -56,12 +57,8 @@ function App() {
                   </>
                ) : (
                   <>
-                     {user === false && (
-                        <>
-                           <Route path='/login' element={<Login />} />
-                           <Route path='/register' element={<Register />} />
-                        </>
-                     )}
+                     <Route path='/login' element={<Login />} />
+                     <Route path='/register' element={<Register />} />
                   </>
                )}
             </Routes>
