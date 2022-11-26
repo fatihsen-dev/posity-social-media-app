@@ -12,9 +12,8 @@ import type { RootState } from "./store/index";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "react-hot-toast";
 import { allUserFunc, userLogin } from "./store/auth/user";
-import { Control, getAllPost, getAllUsers } from "./axios";
+import { Control, getAllUsers } from "./axios";
 import Loading from "./components/Loading";
-import { setAllpost } from "./store/posts/post";
 
 function App() {
    const { user } = useSelector((state: RootState) => state.userData);
@@ -28,9 +27,9 @@ function App() {
                const userResponse = await Control({
                   token: localStorage.getItem("token"),
                });
-               dispatch(userLogin(userResponse.data));
                const allUsersResponse = await getAllUsers();
                dispatch(allUserFunc(allUsersResponse.data));
+               dispatch(userLogin(userResponse.data));
             } catch (error) {
                dispatch(userLogin(false));
                navigate("/login");
@@ -59,6 +58,7 @@ function App() {
                   <>
                      <Route path='/login' element={<Login />} />
                      <Route path='/register' element={<Register />} />
+                     <Route path='*' element={<div></div>}></Route>
                   </>
                )}
             </Routes>

@@ -13,18 +13,16 @@ export default function Login() {
    const loginhandle = async (e: any) => {
       e.preventDefault();
       const { email, password } = e.target;
-
       try {
          const response = await login({
             email: email.value,
             password: password.value,
          });
          toast.success("Login success");
-         dispatch(userLogin(response.data));
-         navigate("/");
-
          const allUsersResponse = await getAllUsers();
+         dispatch(userLogin(response.data));
          dispatch(allUserFunc(allUsersResponse.data));
+         navigate("/");
       } catch (error: any) {
          console.log(error.response);
          return toast.error(error.response.data.message);

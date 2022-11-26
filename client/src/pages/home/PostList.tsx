@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useEffect } from "react";
-import { getAllPost } from "../../axios";
+import { getAllPost, likePost } from "../../axios";
 import { setAllpost } from "../../store/posts/post";
+import { BiCommentDetail } from "react-icons/bi";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { TbShare } from "react-icons/tb";
 
 export default function PostList() {
    const { posts } = useSelector((state: RootState) => state.postsData);
-   const { allUser } = useSelector((state: RootState) => state.userData);
+   const { user, allUser } = useSelector((state: RootState) => state.userData);
    const dispatch = useDispatch();
 
    useEffect(() => {
@@ -31,6 +34,15 @@ export default function PostList() {
          return `${c.getMinutes() - d.getMinutes()} dakika önce`;
       } else {
          return "Yeni";
+      }
+   };
+
+   const likehandle = async (postid: String) => {
+      try {
+         const updatedPost = await likePost({ userid: user._id }, postid);
+         dispatch(setAllpost(updatedPost.data));
+      } catch (error) {
+         console.log(error);
       }
    };
 
@@ -68,6 +80,35 @@ export default function PostList() {
                            alt={process.env.REACT_APP_API_URL + post.image}
                         />
                      )}
+                  </div>
+                  <div className='flex justify-between items-center text-mainDarkV1'>
+                     <button
+                        onClick={() => likehandle(post._id)}
+                        className='flex items-center rounded-sm bg-lightV3 text-lg gap-2 pl-2 group'>
+                        <span>{post.likes.count}</span>
+                        <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                           {post.likes.users.indexOf(user._id) !== -1 ? (
+                              <BsHeartFill className='text-[#993333] transition-all group-hover:scale-110' />
+                           ) : (
+                              <BsHeart className='transition-all group-hover:scale-110' />
+                           )}
+                           <span>Like</span>
+                        </div>
+                     </button>
+                     <button className='flex items-center rounded-sm bg-lightV3 text-lg gap-2 pl-2 group'>
+                        <span>0</span>
+                        <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                           <BiCommentDetail className='text-xl transition-all group-hover:scale-110' />
+                           <span>Comment</span>
+                        </div>
+                     </button>
+                     <button className='flex items-center rounded-sm bg-lightV3 text-lg gap-2 pl-2 group'>
+                        <span>0</span>
+                        <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                           <TbShare className='text-xl transition-all group-hover:scale-110' />
+                           <span>Share</span>
+                        </div>
+                     </button>
                   </div>
                </li>
             ))}
