@@ -53,3 +53,40 @@ export const create = async (req, res) => {
       return res.status(404).send({ message: "Server error" });
    }
 };
+
+export const like = async (req, res) => {
+   const { postid } = req.params;
+   const { userid } = req.body;
+
+   if (userid) {
+      if (postid) {
+         try {
+            await User.findById(userid);
+            const post = await Post.findById(postid);
+            const { count, users } = post.likes;
+
+            if (users.find((user) => user === userid) === undefined) {
+               await Post.findByIdAndUpdate(postid, {
+                  likes: { count: count + 1, users: [...users, userid] },
+               });
+               const posts = await Post.find().sort({ createdAt: -1 });
+               return res.status(200).send(posts);
+            } else {
+               await Post.findByIdAndUpdate(postid, {
+                  likes: {
+                     count: count - 1,
+                     users: [...users.filter((user) => user !== userid)],
+                  },
+               });
+               const posts = await Post.find().sort({ createdAt: -1 });
+               return res.status(200).send(posts);
+            }
+         } catch (error) {
+            console.log(error);
+            res.status(500).send({ message: "Server error" });
+         }
+      }
+      return res.status(500).send({ message: "Post ID not found" });
+   }
+   return res.status(500).send({ message: "User ID not found" });
+};

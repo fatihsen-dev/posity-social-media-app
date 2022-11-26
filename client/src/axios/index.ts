@@ -26,4 +26,8 @@ export const getProfileUser = async (userid: any) =>
 export const newPost = async (formData: object) =>
    await HTTP.post("/posts/create", formData);
 
+// like post
+export const likePost = async (userid: object, postid: String) =>
+   await HTTP.post(`/posts/like/${postid}`, userid);
+
 export const getAllPost = async () => await HTTP.get("/posts");
