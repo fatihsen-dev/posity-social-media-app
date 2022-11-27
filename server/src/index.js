@@ -30,6 +30,7 @@ app.listen(port, () => {
       console.log(err);
    }
 })();
+
 app.get("/", (req, res) => {
    res.send({ message: "success" });
 });
