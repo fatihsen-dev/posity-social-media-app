@@ -1,6 +1,7 @@
-import { Post, postValidation } from "../models/post.js";
+import { Post, postValidation, likeValidation } from "../models/post.js";
 import { User } from "../models/user.js";
 import multer from "multer";
+import { Comment, commentValidation } from "../models/comment.js";
 let lastFileName = "";
 
 // multer settings
@@ -17,7 +18,11 @@ export const storage = multer.diskStorage({
 
 export const index = async (req, res) => {
    try {
-      const posts = await Post.find().sort({ createdAt: -1 });
+      const posts = await Post.find()
+         .sort({ createdAt: -1 })
+         .select("likes comments text image owner createdAt")
+         .populate("comments.comment", "-post -_id");
+
       return res.status(200).send(posts);
    } catch (err) {
       return res.status(404).send({ message: "Error!" });
@@ -55,38 +60,131 @@ export const create = async (req, res) => {
 };
 
 export const like = async (req, res) => {
-   const { postid } = req.params;
-   const { userid } = req.body;
+   const { error } = likeValidation(req.body);
 
-   if (userid) {
-      if (postid) {
-         try {
-            await User.findById(userid);
-            const post = await Post.findById(postid);
-            const { count, users } = post.likes;
+   if (error) {
+      return res.status(400).send({ message: error.details[0].message });
+   }
 
-            if (users.find((user) => user === userid) === undefined) {
-               await Post.findByIdAndUpdate(postid, {
-                  likes: { count: count + 1, users: [...users, userid] },
+   const { user, post } = req.body;
+
+   try {
+      const getPost = await Post.findById(post);
+
+      try {
+         await Post.findById(user);
+
+         const filtered = getPost.likes.users.filter((u) => String(u._id) === user);
+         if (filtered.length > 0) {
+            const updatedPost = await Post.findByIdAndUpdate(getPost._id, {
+               likes: {
+                  count: getPost.likes.count - 1,
+                  users: getPost.likes.users.filter((u) => String(u._id) !== user),
+               },
+            });
+            return res.send(
+               await Post.find()
+                  .sort({ createdAt: -1 })
+                  .select("likes comments text image owner createdAt")
+                  .populate("comments.comment", "-post -_id")
+            );
+         }
+
+         const updatedPost = await Post.findByIdAndUpdate(getPost._id, {
+            likes: {
+               count: getPost.likes.count + 1,
+               users: [...getPost.likes.users, user],
+            },
+         });
+         return res.send(
+            await Post.find()
+               .sort({ createdAt: -1 })
+               .select("likes comments text image owner createdAt")
+               .populate("comments.comment", "-post -_id")
+         );
+      } catch (error) {
+         res.status(404).send({ message: "User not found" });
+      }
+   } catch (error) {
+      console.log(error);
+      res.status(404).send({ message: "Post not found" });
+   }
+};
+
+export const comment = async (req, res) => {
+   try {
+      return res.send(await Comment.find());
+   } catch (error) {
+      console.log(error);
+      return res.status(404).send({ message: "Server error" });
+   }
+};
+
+export const createComment = async (req, res) => {
+   const { error } = commentValidation(req.body);
+   if (error) {
+      return res.status(400).send({ message: error.details[0].message });
+   }
+   const { user, post, text } = req.body;
+
+   try {
+      const getPost = await Post.findById(post);
+
+      try {
+         await User.findById(user);
+
+         if (getPost.comments.count > 0) {
+            try {
+               const comment = await Comment.findById(getPost.comments.comment);
+               const updatedComment = await Comment.findByIdAndUpdate(comment._id, {
+                  comments: [
+                     ...comment.comments,
+                     {
+                        user,
+                        text,
+                     },
+                  ],
                });
-               const posts = await Post.find().sort({ createdAt: -1 });
-               return res.status(200).send(posts);
-            } else {
-               await Post.findByIdAndUpdate(postid, {
-                  likes: {
-                     count: count - 1,
-                     users: [...users.filter((user) => user !== userid)],
+
+               await Post.findByIdAndUpdate(getPost._id, {
+                  comments: {
+                     count: getPost.comments.count + 1,
+                     comment: updatedComment._id,
                   },
                });
-               const posts = await Post.find().sort({ createdAt: -1 });
-               return res.status(200).send(posts);
+
+               return res.send(
+                  await Post.find()
+                     .sort({ createdAt: -1 })
+                     .select("likes comments text image owner createdAt")
+                     .populate("comments.comment", "-post -_id")
+               );
+            } catch (error) {
+               return res.status(400).send({ message: "Comment not sended" });
             }
-         } catch (error) {
-            console.log(error);
-            res.status(500).send({ message: "Server error" });
          }
+         const comment = await Comment({
+            post,
+            comments: [{ user, text }],
+         });
+         await comment.save();
+         await Post.findByIdAndUpdate(getPost._id, {
+            comments: {
+               count: 1,
+               comment: comment._id,
+            },
+         });
+         return res.send(
+            await Post.find()
+               .sort({ createdAt: -1 })
+               .select("likes comments text image owner createdAt")
+               .populate("comments.comment", "-post -_id")
+         );
+      } catch (error) {
+         return res.status(404).send({ message: "User not found" });
       }
-      return res.status(500).send({ message: "Post ID not found" });
+   } catch (error) {
+      console.log(error);
+      return res.status(404).send({ message: "Post not found" });
    }
-   return res.status(500).send({ message: "User ID not found" });
 };

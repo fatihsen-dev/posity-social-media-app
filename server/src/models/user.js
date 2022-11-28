@@ -7,6 +7,10 @@ const userSchema = new Schema(
       email: { type: String, required: true },
       password: { type: String, required: true },
       avatar: { type: String },
+      posts: {
+         count: { type: Number, default: 0 },
+         post: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+      },
       admin: {
          type: Boolean,
          default: false,
