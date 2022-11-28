@@ -15,7 +15,7 @@ export const Control = async (token: object) =>
 export const register = async (formData: object) =>
    await HTTP.post("/users/register", formData);
 
-// get all users
+// get users
 export const getAllUsers = async () => await HTTP.get("/users");
 
 // get profile page data
@@ -27,7 +27,12 @@ export const newPost = async (formData: object) =>
    await HTTP.post("/posts/create", formData);
 
 // like post
-export const likePost = async (userid: object, postid: String) =>
-   await HTTP.post(`/posts/like/${postid}`, userid);
+export const likePost = async (formData: object) =>
+   await HTTP.post("/posts/like", formData);
 
+// get posts
 export const getAllPost = async () => await HTTP.get("/posts");
+
+// like post
+export const sendComment = async (formData: object) =>
+   await HTTP.post("/posts/comment/create", formData);
