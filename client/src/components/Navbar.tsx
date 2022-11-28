@@ -6,6 +6,7 @@ import { Fragment, useState } from "react";
 import { userLogout } from "../store/auth/user";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
+import Avatar from "boring-avatars";
 
 export default function Navbar() {
    const [searchValue, setSearchValue] = useState("");
@@ -59,11 +60,15 @@ export default function Navbar() {
                            to={`user/${user._id}`}
                            className='flex items-center gap-3 p-2 cursor-pointer hover:bg-mainDarkV2 transition-colors'
                            key={key}>
-                           <img
-                              className='w-6 h-6 object-cover rounded-full'
-                              src={user.avatar}
-                              alt={user.name}
-                           />
+                           {user.avatar ? (
+                              <img
+                                 className='w-6 h-6 object-cover rounded-full'
+                                 src={user.avatar}
+                                 alt={user.name}
+                              />
+                           ) : (
+                              <Avatar variant='beam' size={36} name={user.name}></Avatar>
+                           )}
                            <span className='flex-1'>{user.name}</span>
                         </NavLink>
                      ))}
@@ -83,11 +88,15 @@ export default function Navbar() {
                <Menu as='div' className='relative'>
                   <div>
                      <Menu.Button className='flex rounded-full bg-gray-800 text-sm'>
-                        <img
-                           className='h-9 w-9 rounded-full'
-                           src={user.avatar}
-                           alt={user.name}
-                        />
+                        {user.avatar ? (
+                           <img
+                              className='w-6 h-6 object-cover rounded-full'
+                              src={user.avatar}
+                              alt={user.name}
+                           />
+                        ) : (
+                           <Avatar variant='beam' size={34} name={user.name}></Avatar>
+                        )}
                      </Menu.Button>
                   </div>
                   <Transition

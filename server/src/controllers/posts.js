@@ -111,6 +111,16 @@ export const like = async (req, res) => {
    }
 };
 
+export const getOnePost = async (req, res) => {
+   const { postid } = req.params;
+   try {
+      const post = await Post.findById(postid);
+      return res.send(post);
+   } catch (error) {
+      return res.status(404).send({ message: "Post not found" });
+   }
+};
+
 export const comment = async (req, res) => {
    try {
       return res.send(await Comment.find());

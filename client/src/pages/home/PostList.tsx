@@ -7,6 +7,7 @@ import { BiCommentDetail } from "react-icons/bi";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { TbShare } from "react-icons/tb";
 import toast from "react-hot-toast";
+import Avatar from "boring-avatars";
 
 export default function PostList() {
    const { posts } = useSelector((state: RootState) => state.postsData);
@@ -75,14 +76,29 @@ export default function PostList() {
                   <div className='flex flex-col gap-2 p-3'>
                      {allUser && (
                         <div className='flex items-center gap-2 select-none'>
-                           <img
-                              className='w-9 h-9 object-cover rounded-full'
-                              src={
-                                 allUser.find((user: any) => user._id === post.owner)
-                                    .avatar
-                              }
-                              alt=''
-                           />
+                           {allUser.find((user: any) => user._id === post.owner)
+                              .avatar ? (
+                              <img
+                                 className='w-9 h-9 object-cover rounded-full'
+                                 src={
+                                    allUser.find((user: any) => user._id === post.owner)
+                                       .avatar
+                                 }
+                                 alt={
+                                    allUser.find((user: any) => user._id === post.owner)
+                                       .name
+                                 }
+                              />
+                           ) : (
+                              <Avatar
+                                 variant='beam'
+                                 size={36}
+                                 name={
+                                    allUser.find((user: any) => user._id === post.owner)
+                                       .name
+                                 }></Avatar>
+                           )}
+
                            <div className='flex flex-col justify-center'>
                               <span className='font-medium leading-4'>
                                  {
@@ -141,20 +157,32 @@ export default function PostList() {
                   </div>
                   <div className='hidden peer-checked:flex flex-col'>
                      {post.comments.comment?.comments && (
-                        <ul className='flex flex-col gap-5 py-3 bg-lightV3 p-3'>
+                        <ul className='flex flex-col gap-5 py-3 p-3'>
                            {post.comments.comment.comments.map(
                               (comment: any, index: any) => (
                                  <li className='flex gap-2' key={index}>
-                                    <img
-                                       className='w-7 h-7 rounded-full object-cover'
-                                       src={
-                                          allUser.find(
-                                             (user: any) => user._id === comment.user
-                                          ).avatar
-                                       }
-                                       alt={comment.text}
-                                    />
-                                    <span className='bg-lightV4 rounded-sm px-2 py-1 flex-1 text-sm'>
+                                    {allUser.find((user: any) => user._id === post.owner)
+                                       .avatar ? (
+                                       <img
+                                          className='w-9 h-9 object-cover rounded-full'
+                                          src={
+                                             allUser.find(
+                                                (user: any) => user._id === comment.user
+                                             ).avatar
+                                          }
+                                          alt={
+                                             allUser.find(
+                                                (user: any) => user._id === post.owner
+                                             ).name
+                                          }
+                                       />
+                                    ) : (
+                                       <Avatar
+                                          variant='beam'
+                                          size={28}
+                                          name={user.name}></Avatar>
+                                    )}
+                                    <span className='bg-lightV3 rounded-sm px-2 py-1 flex-1 text-sm'>
                                        {comment.text}
                                     </span>
                                  </li>
@@ -167,7 +195,7 @@ export default function PostList() {
                         className='flex p-3 gap-2 items-start'>
                         <textarea
                            placeholder='Send comment...'
-                           className='resize-none bg-lightV4 rounded-sm h-16 p-1.5 text-sm flex-1'
+                           className='resize-none bg-lightV3 rounded-sm h-16 p-1.5 text-sm flex-1'
                            name='text'></textarea>
                         <button
                            className='ml-auto px-7 py-1 bg-mainDarkV2 text-lightV1 rounded-sm'

@@ -14,6 +14,7 @@ import { Toaster } from "react-hot-toast";
 import { allUserFunc, userLogin } from "./store/auth/user";
 import { Control, getAllUsers } from "./axios";
 import Loading from "./components/Loading";
+import Post from "./pages/post/Post";
 
 function App() {
    const { user } = useSelector((state: RootState) => state.userData);
@@ -51,6 +52,7 @@ function App() {
                         <Route path='user/:username' element={<Profile />} />
                         <Route path='message' element={<Message />} />
                         <Route path='groups' element={<Groups />} />
+                        <Route path='post/:postid' element={<Post />} />
                      </Route>
                      <Route path='*' element={<NotFound />} />
                   </>

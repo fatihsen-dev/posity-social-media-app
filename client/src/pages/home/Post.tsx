@@ -5,6 +5,7 @@ import { getAllPost, newPost } from "../../axios";
 import { useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { setAllpost } from "../../store/posts/post";
+import Avatar from "boring-avatars";
 
 export default function Post() {
    const { user } = useSelector((state: RootState) => state.userData);
@@ -43,7 +44,11 @@ export default function Post() {
          onSubmit={formHandle}
          className='bg-lightV1 p-3 flex flex-col gap-3 rounded-sm w-[700px]'>
          <div className='flex gap-1 items-center'>
-            <img src={user.avatar} alt={user.name} className='w-9 h-9 rounded-full' />
+            {user.avatar ? (
+               <img src={user.avatar} alt={user.name} className='w-9 h-9 rounded-full' />
+            ) : (
+               <Avatar variant='beam' size={36} name={user.name}></Avatar>
+            )}
             <span className='text-lg font-medium'>{user.name}</span>
             <div className='flex ml-auto items-center gap-3'>
                <input

@@ -89,7 +89,7 @@ export const register = async (req, res) => {
          name,
          email,
          password: hashedPassword,
-         avatar: avatar ? avatar : "https://avatars.githubusercontent.com/u/20463385?v=4",
+         avatar: avatar ? avatar : null,
       });
 
       await user.save();
