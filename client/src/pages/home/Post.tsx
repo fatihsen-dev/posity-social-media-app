@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import postİmageButton from "../../assets/images/postimagebutton.svg";
 import { getAllPost, newPost } from "../../axios";
-import { RefObject, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { setAllpost } from "../../store/posts/post";
 
