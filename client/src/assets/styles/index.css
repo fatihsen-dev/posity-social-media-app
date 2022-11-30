@@ -2,5 +2,15 @@
 @import "tailwind.css";
 
 #root {
-   @apply bg-lightV2;
+   @apply bg-lightV2 text-mainDarkV1;
+}
+
+::-webkit-scrollbar {
+   width: 10px;
+}
+::-webkit-scrollbar-track {
+   background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+   @apply bg-grayV2/50
 }
