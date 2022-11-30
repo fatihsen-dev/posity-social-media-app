@@ -3,7 +3,13 @@ import Joi from "joi";
 
 const commentSchema = new Schema({
    post: { type: Schema.Types.ObjectId, ref: "Post" },
-   comments: [{ user: { type: Schema.Types.ObjectId, ref: "User" }, text: String }],
+   comments: [
+      {
+         user: { type: Schema.Types.ObjectId, ref: "User" },
+         text: String,
+         createdAt: { type: Date, default: Date.now },
+      },
+   ],
 });
 
 export const commentValidation = (comment) => {

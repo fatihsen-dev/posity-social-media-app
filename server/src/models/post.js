@@ -26,6 +26,12 @@ export const postValidation = (post) => {
    }).validate(post);
 };
 
+export const postidValidate = (postid) => {
+   return Joi.object({
+      postid: Joi.string().min(24).max(24).required(),
+   }).validate(postid);
+};
+
 export const likeValidation = (post) => {
    return Joi.object({
       user: Joi.string().min(24).max(24).required(),

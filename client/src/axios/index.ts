@@ -33,6 +33,9 @@ export const likePost = async (formData: object) =>
 // get posts
 export const getAllPost = async () => await HTTP.get("/posts");
 
+// get one post
+export const getOnePost = async (postid: any) => await HTTP.get(`/posts/post/${postid}`);
+
 // like post
 export const sendComment = async (formData: object) =>
    await HTTP.post("/posts/comment/create", formData);

@@ -1,7 +1,8 @@
-import { Post, postValidation, likeValidation } from "../models/post.js";
+import { Post, postValidation, likeValidation, postidValidate } from "../models/post.js";
 import { User } from "../models/user.js";
 import multer from "multer";
 import { Comment, commentValidation } from "../models/comment.js";
+import Joi from "joi";
 let lastFileName = "";
 
 // multer settings
@@ -45,6 +46,12 @@ export const create = async (req, res) => {
                owner,
             });
             lastFileName = "";
+            await User.findByIdAndUpdate(user._id, {
+               posts: {
+                  count: user.posts.count + 1,
+                  post: [...user.posts.post, post._id],
+               },
+            });
             return res.send(post);
          } else {
             const post = await Post.create({ text, owner });
@@ -113,11 +120,22 @@ export const like = async (req, res) => {
 
 export const getOnePost = async (req, res) => {
    const { postid } = req.params;
-   try {
-      const post = await Post.findById(postid);
-      return res.send(post);
-   } catch (error) {
+
+   if (postid.length !== 24 && typeof postid !== String) {
       return res.status(404).send({ message: "Post not found" });
+   }
+   try {
+      const post = await Post.findById(postid)
+         .select("-updatedAt")
+         .populate("comments.comment")
+         .populate("owner", "-password -updatedAt -__v -token -admin");
+
+      if (post) {
+         return res.send(post);
+      }
+      return res.status(404).send({ message: "Post not found" });
+   } catch (error) {
+      return res.status(500).send({ message: "Server error" });
    }
 };
 
