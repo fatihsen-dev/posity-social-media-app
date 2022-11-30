@@ -5,9 +5,11 @@ import { getAllPost, likePost, sendComment } from "../../axios";
 import { setAllpost } from "../../store/posts/post";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
-import { TbShare } from "react-icons/tb";
+import { AiOutlineShareAlt } from "react-icons/ai";
 import toast from "react-hot-toast";
 import Avatar from "boring-avatars";
+import { NavLink } from "react-router-dom";
+import { formatDate, formatDateMin } from "../../helpers/dateFormat";
 
 export default function PostList() {
    const { posts } = useSelector((state: RootState) => state.postsData);
@@ -20,24 +22,6 @@ export default function PostList() {
          dispatch(setAllpost(postResponse.data));
       })();
    }, []);
-
-   const formatDate = (date: any) => {
-      const d = new Date(date);
-      const c = new Date();
-      if (d.getFullYear() < c.getFullYear()) {
-         return `${c.getFullYear() - d.getFullYear()} yıl önce`;
-      } else if (d.getMonth() < c.getMonth()) {
-         return `${c.getMonth() - d.getMonth()} ay önce`;
-      } else if (d.getDate() < c.getDate()) {
-         return `${c.getDate() - d.getDate()} gün önce`;
-      } else if (d.getHours() < c.getHours()) {
-         return `${c.getHours() - d.getHours()} saat önce`;
-      } else if (d.getMinutes() < c.getMinutes()) {
-         return `${c.getMinutes() - d.getMinutes()} dakika önce`;
-      } else {
-         return "Yeni";
-      }
-   };
 
    const likehandle = async (postid: String) => {
       try {
@@ -75,7 +59,11 @@ export default function PostList() {
                   />
                   <div className='flex flex-col gap-2 p-3'>
                      {allUser && (
-                        <div className='flex items-center gap-2 select-none'>
+                        <NavLink
+                           to={`user/${
+                              allUser.find((user: any) => user._id === post.owner)._id
+                           }`}
+                           className='mr-auto flex items-center gap-2 select-none'>
                            {allUser.find((user: any) => user._id === post.owner)
                               .avatar ? (
                               <img
@@ -90,27 +78,30 @@ export default function PostList() {
                                  }
                               />
                            ) : (
-                              <Avatar
-                                 variant='beam'
-                                 size={36}
-                                 name={
-                                    allUser.find((user: any) => user._id === post.owner)
-                                       .name
-                                 }></Avatar>
+                              <div className='overflow-hidden rounded-full'>
+                                 <Avatar
+                                    variant='beam'
+                                    size={36}
+                                    name={
+                                       allUser.find(
+                                          (user: any) => user._id === post.owner
+                                       ).name
+                                    }></Avatar>
+                              </div>
                            )}
 
                            <div className='flex flex-col justify-center'>
-                              <span className='font-medium leading-4'>
+                              <span className='font-medium leading-5'>
                                  {
                                     allUser.find((user: any) => user._id === post.owner)
                                        .name
                                  }
                               </span>
-                              <span className='text-sm text-grayV2'>
+                              <span className='text-xs text-grayV2'>
                                  {formatDate(post.createdAt)}
                               </span>
                            </div>
-                        </div>
+                        </NavLink>
                      )}
 
                      <div className='flex flex-col gap-1'>
@@ -123,10 +114,10 @@ export default function PostList() {
                            />
                         )}
                      </div>
-                     <div className='flex justify-between items-center text-mainDarkV1'>
+                     <div className='border-t-lightV4 border-t pt-2 flex justify-around items-center text-mainDarkV1'>
                         <button
                            onClick={() => likehandle(post._id)}
-                           className='flex items-center rounded-sm bg-lightV3 text-lg gap-2 pl-2 group'>
+                           className='flex items-center rounded-sm bg-lightV3 gap-2 pl-2 group'>
                            <span>{post.likes.count}</span>
                            <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
                               {post.likes.users.indexOf(user._id) !== -1 ? (
@@ -137,7 +128,7 @@ export default function PostList() {
                               <span>Like</span>
                            </div>
                         </button>
-                        <button className='flex items-center rounded-sm bg-lightV3 text-lg gap-2 pl-2 group'>
+                        <button className='flex items-center rounded-sm bg-lightV3 gap-2 pl-2 group'>
                            <span>{post.comments.count}</span>
                            <label
                               htmlFor={`checkbox${index}`}
@@ -146,21 +137,40 @@ export default function PostList() {
                               <span>Comment</span>
                            </label>
                         </button>
-                        <button className='flex items-center rounded-sm bg-lightV3 text-lg gap-2 pl-2 group'>
+                        <button className='flex items-center rounded-sm bg-lightV3 gap-2 pl-2 group'>
                            <span>0</span>
                            <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
-                              <TbShare className='text-xl transition-all group-hover:scale-110' />
+                              <AiOutlineShareAlt className='text-xl transition-all group-hover:scale-110' />
                               <span>Share</span>
                            </div>
                         </button>
                      </div>
                   </div>
-                  <div className='hidden peer-checked:flex flex-col'>
+                  <div className='hidden peer-checked:flex flex-col pb-3'>
+                     <form
+                        onSubmit={(e) => commentHandle(e, post._id, user._id)}
+                        className='flex px-3 gap-6 items-start'>
+                        <textarea
+                           onInput={(e: any) => {
+                              e.target.style.height = "52px";
+                              e.target.style.height = e.target.scrollHeight + "px";
+                           }}
+                           placeholder='Send comment...'
+                           className='placeholder-mainDarkV2/60 max-h-28 resize-none min-h-0-[100px] bg-lightV3 rounded-sm p-1.5 text-sm flex-1'
+                           name='text'></textarea>
+                        <button
+                           className='ml-auto px-7 py-1 bg-mainDarkV2 text-lightV1 rounded-sm'
+                           type='submit'>
+                           Send
+                        </button>
+                     </form>
                      {post.comments.comment?.comments && (
-                        <ul className='flex flex-col gap-5 py-3 p-3'>
+                        <ul className='flex flex-col gap-5 p-3 pb-0'>
                            {post.comments.comment.comments.map(
                               (comment: any, index: any) => (
-                                 <li className='flex gap-2' key={index}>
+                                 <li
+                                    className='flex gap-2 p-2 bg-lightV3/70 rounded-sm'
+                                    key={index}>
                                     {allUser.find((user: any) => user._id === post.owner)
                                        .avatar ? (
                                        <img
@@ -172,7 +182,7 @@ export default function PostList() {
                                           }
                                           alt={
                                              allUser.find(
-                                                (user: any) => user._id === post.owner
+                                                (user: any) => user._id === comment.user
                                              ).name
                                           }
                                        />
@@ -180,29 +190,35 @@ export default function PostList() {
                                        <Avatar
                                           variant='beam'
                                           size={28}
-                                          name={user.name}></Avatar>
+                                          name={
+                                             allUser.find(
+                                                (user: any) => user._id === comment.user
+                                             ).name
+                                          }></Avatar>
                                     )}
-                                    <span className='bg-lightV3 rounded-sm px-2 py-1 flex-1 text-sm'>
-                                       {comment.text}
-                                    </span>
+                                    <div className='text-sm w-full text-mainDarkV1'>
+                                       <div className='flex justify-between'>
+                                          <span className='font-medium text-base'>
+                                             {
+                                                allUser.find(
+                                                   (user: any) =>
+                                                      user._id === comment.user
+                                                ).name
+                                             }
+                                          </span>
+                                          <span className='font-semibold text-mainDarkV1/50'>
+                                             {formatDateMin(comment.createdAt)}
+                                          </span>
+                                       </div>
+                                       <span className='rounded-sm py-1 flex-1 text-mainDarkV1/80'>
+                                          {comment.text}
+                                       </span>
+                                    </div>
                                  </li>
                               )
                            )}
                         </ul>
                      )}
-                     <form
-                        onSubmit={(e) => commentHandle(e, post._id, user._id)}
-                        className='flex p-3 gap-2 items-start'>
-                        <textarea
-                           placeholder='Send comment...'
-                           className='resize-none bg-lightV3 rounded-sm h-16 p-1.5 text-sm flex-1'
-                           name='text'></textarea>
-                        <button
-                           className='ml-auto px-7 py-1 bg-mainDarkV2 text-lightV1 rounded-sm'
-                           type='submit'>
-                           Send
-                        </button>
-                     </form>
                   </div>
                </li>
             ))}

@@ -67,7 +67,12 @@ export default function Navbar() {
                                  alt={user.name}
                               />
                            ) : (
-                              <Avatar variant='beam' size={36} name={user.name}></Avatar>
+                              <div className='overflow-hidden rounded-full'>
+                                 <Avatar
+                                    variant='beam'
+                                    size={36}
+                                    name={user.name}></Avatar>
+                              </div>
                            )}
                            <span className='flex-1'>{user.name}</span>
                         </NavLink>
@@ -95,7 +100,9 @@ export default function Navbar() {
                               alt={user.name}
                            />
                         ) : (
-                           <Avatar variant='beam' size={34} name={user.name}></Avatar>
+                           <div className='overflow-hidden rounded-full'>
+                              <Avatar variant='beam' size={34} name={user.name}></Avatar>
+                           </div>
                         )}
                      </Menu.Button>
                   </div>

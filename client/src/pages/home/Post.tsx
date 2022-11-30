@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { setAllpost } from "../../store/posts/post";
 import Avatar from "boring-avatars";
+import { NavLink } from "react-router-dom";
 
 export default function Post() {
    const { user } = useSelector((state: RootState) => state.userData);
@@ -44,12 +45,20 @@ export default function Post() {
          onSubmit={formHandle}
          className='bg-lightV1 p-3 flex flex-col gap-3 rounded-sm w-[700px]'>
          <div className='flex gap-1 items-center'>
-            {user.avatar ? (
-               <img src={user.avatar} alt={user.name} className='w-9 h-9 rounded-full' />
-            ) : (
-               <Avatar variant='beam' size={36} name={user.name}></Avatar>
-            )}
-            <span className='text-lg font-medium'>{user.name}</span>
+            <NavLink className='flex items-center gap-1' to={`user/${user._id}`}>
+               {user.avatar ? (
+                  <img
+                     src={user.avatar}
+                     alt={user.name}
+                     className='w-9 h-9 rounded-full'
+                  />
+               ) : (
+                  <div className='overflow-hidden rounded-full'>
+                     <Avatar variant='beam' size={36} name={user.name}></Avatar>
+                  </div>
+               )}
+               <span className='text-lg font-medium'>{user.name}</span>
+            </NavLink>
             <div className='flex ml-auto items-center gap-3'>
                <input
                   onChange={fileHandle}
@@ -72,10 +81,14 @@ export default function Post() {
          </div>
          <div className='flex gap-2'>
             <textarea
+               onInput={(e: any) => {
+                  e.target.style.height = "128px";
+                  e.target.style.height = e.target.scrollHeight + "px";
+               }}
                ref={textareaRef}
                name='text'
                placeholder='Write something...'
-               className='resize-none flex-1 rounded-sm bg-lightV3 px-2 py-1 placeholder-grayV1/70 font-medium h-32'></textarea>
+               className='resize-none max-h-72 flex-1 rounded-sm bg-lightV3 px-2 py-1 placeholder-grayV1/70 font-medium h-32'></textarea>
             {filename.length > 0 && (
                <div className='relative bg-lightV3 p-2 rounded-sm'>
                   <img
