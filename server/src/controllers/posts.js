@@ -55,6 +55,12 @@ export const create = async (req, res) => {
             return res.send(post);
          } else {
             const post = await Post.create({ text, owner });
+            await User.findByIdAndUpdate(user._id, {
+               posts: {
+                  count: user.posts.count + 1,
+                  post: [...user.posts.post, post._id],
+               },
+            });
             return res.send(post);
          }
       } else {

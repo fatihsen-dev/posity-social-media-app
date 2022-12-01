@@ -32,7 +32,7 @@ export const login = async (req, res) => {
 
       const { _id, name, email, admin, avatar } = user;
 
-      const token = jwt.sign({ _id, name, email, admin }, "testKey");
+      const token = jwt.sign({ _id, name, email, admin }, process.env.jwtToken);
 
       await User.findByIdAndUpdate(_id, { token });
 
@@ -104,9 +104,11 @@ export const getOneUser = async (req, res) => {
    const { userid } = req.params;
 
    try {
-      const user = await User.findById(userid).select(
-         "name email avatar admin createdAt"
-      );
+      const user = await User.findById(userid)
+         .select("-token -admin -password -updatedAt -__v")
+         .populate("posts.post", "-updatedAt -__v -owner", null, {
+            sort: { createdAt: -1 },
+         });
       return res.send(user);
    } catch (error) {
       console.log(error);
