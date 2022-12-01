@@ -12,6 +12,7 @@
 
 # production
 /build
+/server/src/public/image/post-images
 
 # misc
 .DS_Store
