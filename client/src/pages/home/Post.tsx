@@ -43,9 +43,9 @@ export default function Post() {
    return (
       <form
          onSubmit={formHandle}
-         className='bg-lightV1 p-3 flex flex-col gap-3 rounded-sm w-[700px]'>
+         className='bg-lightV1 p-3 flex flex-col gap-3 rounded-sm w-full'>
          <div className='flex gap-1 items-center'>
-            <NavLink className='flex items-center gap-1' to={`user/${user._id}`}>
+            <NavLink className='flex items-center gap-1' to={`/user/${user._id}`}>
                {user.avatar ? (
                   <img
                      src={user.avatar}

@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useEffect } from "react";
-import { getAllPost, likePost, sendComment } from "../../axios";
+import { likePost, sendComment } from "../../axios";
 import { setAllpost } from "../../store/posts/post";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
@@ -15,13 +14,6 @@ export default function PostList() {
    const { posts } = useSelector((state: RootState) => state.postsData);
    const { user, allUser } = useSelector((state: RootState) => state.userData);
    const dispatch = useDispatch();
-
-   useEffect(() => {
-      (async () => {
-         const postResponse = await getAllPost();
-         dispatch(setAllpost(postResponse.data));
-      })();
-   }, []);
 
    const likehandle = async (postid: String) => {
       try {
@@ -149,7 +141,7 @@ export default function PostList() {
                   <div className='hidden peer-checked:flex flex-col pb-3'>
                      <form
                         onSubmit={(e) => commentHandle(e, post._id, user._id)}
-                        className='flex px-3 gap-6 items-start'>
+                        className='flex px-3 gap-3 items-start'>
                         <textarea
                            onInput={(e: any) => {
                               e.target.style.height = "52px";
