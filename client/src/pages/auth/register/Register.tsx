@@ -15,7 +15,7 @@ export default function Register() {
       }
 
       try {
-         const response = await register({
+         await register({
             name: name.value,
             email: email.value,
             password: password.value,
@@ -30,17 +30,17 @@ export default function Register() {
    };
    return (
       <div className='h-full flex'>
-         <div className='flex-1'>
+         <div className='flex-1 2xl:inline-block lg:inline-block hidden'>
             <img className='w-full h-full object-cover' src={Image} alt='' />
          </div>
-         <div className='flex-1 relative flex flex-col'>
+         <div className='flex-1 relative flex flex-col px-4'>
             <span className='block w-full text-end text-4xl font-bold py-4 px-5'>
                Posity
             </span>
             <div className='flex-1 flex'>
                <form
                   onSubmit={registerhandle}
-                  className='m-auto flex flex-col gap-7 w-[440px]'>
+                  className='m-auto flex flex-col gap-7 2xl:w-[440px] sm:w-[440px] w-full'>
                   <span className='font-bold text-4xl'>Register</span>
                   <div className='flex flex-col'>
                      <span className='text-sm text-grayV1/70'>Full Name</span>

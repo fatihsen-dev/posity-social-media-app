@@ -60,8 +60,8 @@ export default function Post() {
    return (
       <>
          {post && (
-            <div className='w-full flex gap-6 py-5 px-10 items-start'>
-               <div className='bg-lightV1 flex-1 rounded-sm p-3 flex flex-col gap-2.5'>
+            <div className='w-full flex 2xl:flex-row xl:flex-row flex-col gap-6 py-5 2xl:px-0 md:px-0 px-5 items-start'>
+               <div className='bg-lightV1 flex-1 rounded-sm p-3 flex flex-col gap-2.5 w-full'>
                   <span>{post.text}</span>
                   {post.image && (
                      <img
@@ -71,11 +71,13 @@ export default function Post() {
                      />
                   )}
 
-                  <div className='border-t-lightV4 border-t pt-2 flex justify-around items-center text-mainDarkV1'>
+                  <div className='2xl:text-base sm:text-base text-sm border-t-lightV4 border-t pt-2 flex justify-around items-center text-mainDarkV1'>
                      <button
                         onClick={() => likehandle(post._id)}
-                        className='flex items-center rounded-sm bg-lightV3 gap-2 pl-2 group'>
-                        <span>{post.likes.count}</span>
+                        className='flex items-center rounded-sm bg-lightV3 gap-2 group'>
+                        <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                           {post.likes.count}
+                        </span>
                         <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
                            {post.likes.users.indexOf(user._id) !== -1 ? (
                               <BsHeartFill className='text-[#993333] transition-all group-hover:scale-110' />
@@ -85,15 +87,19 @@ export default function Post() {
                            <span>Like</span>
                         </div>
                      </button>
-                     <button className='flex items-center rounded-sm bg-lightV3 gap-2 pl-2 group'>
-                        <span>{post.comments.count}</span>
+                     <button className='flex items-center rounded-sm bg-lightV3 gap-2 group'>
+                        <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                           {post.comments.count}
+                        </span>
                         <div className='cursor-pointer flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
                            <BiCommentDetail className='text-xl transition-all group-hover:scale-110' />
                            <span>Comment</span>
                         </div>
                      </button>
-                     <button className='flex items-center rounded-sm bg-lightV3 gap-2 pl-2 group'>
-                        <span>0</span>
+                     <button className='2xl:text-base sm:text-base text-sm flex items-center rounded-sm bg-lightV3 gap-2 group'>
+                        <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                           0
+                        </span>
                         <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
                            <AiOutlineShareAlt className='text-xl transition-all group-hover:scale-110' />
                            <span>Share</span>
@@ -101,7 +107,7 @@ export default function Post() {
                      </button>
                   </div>
                </div>
-               <div className='bg-lightV1 flex flex-col justify-between flex-[0.5] p-3 gap-3'>
+               <div className='bg-lightV1 rounded-sm flex flex-col justify-between flex-[0.5] p-3 gap-3 w-full'>
                   <div className=''>
                      <NavLink
                         to={`/user/${post.owner._id}`}
@@ -130,17 +136,17 @@ export default function Post() {
                   </div>
                   <form
                      onSubmit={(e) => commentHandle(e, post._id, user._id)}
-                     className='flex gap-3 items-start'>
+                     className='flex 2xl:flex-row sm:flex-row flex-col gap-3 items-start'>
                      <textarea
                         onInput={(e: any) => {
                            e.target.style.height = "52px";
                            e.target.style.height = e.target.scrollHeight + "px";
                         }}
                         placeholder='Send comment...'
-                        className='placeholder-mainDarkV2/60 max-h-28 resize-none min-h-0-[100px] bg-lightV3 rounded-sm p-1.5 text-sm flex-1'
+                        className='placeholder-mainDarkV2/60 w-full max-h-28 resize-none min-h-0-[100px] bg-lightV3 rounded-sm p-1.5 text-sm flex-1'
                         name='text'></textarea>
                      <button
-                        className='ml-auto px-7 py-1 bg-mainDarkV2 text-lightV1 rounded-sm'
+                        className='ml-auto px-7 py-1 bg-mainDarkV2 2xl:w-auto sm:w-auto w-full text-lightV1 rounded-sm'
                         type='submit'>
                         Send
                      </button>
