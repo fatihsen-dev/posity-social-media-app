@@ -265,11 +265,13 @@ export default function Profile() {
                      </ul>
                   ) : (
                      <>
-                        <ul className='w-[80%] mx-auto flex flex-col gap-4 bg-lightV1 rounded-sm h-full'>
+                        <ul className='2xl:w-[80%] lg:w-[80%] w-full mx-auto flex justify-center items-center flex-col gap-4 bg-lightV1 rounded-sm h-full'>
                            {username === user._id ? (
                               <Post />
                            ) : (
-                              <>Kullanıcının herhangi bir gönderisi yok.</>
+                              <div className='p-10'>
+                                 Kullanıcının herhangi bir gönderisi yok.
+                              </div>
                            )}
                         </ul>
                      </>

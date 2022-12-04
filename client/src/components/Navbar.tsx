@@ -80,7 +80,7 @@ export default function Navbar() {
                </ul>
             </div>
             <div className='flex items-center gap-3 z-10 flex-[.2] justify-end'>
-               <NavLink
+               {/* <NavLink
                   to='message'
                   className='w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 transition-colors rounded-full grid place-items-center'>
                   <TbMessageCircle className='text-xl' />
@@ -89,7 +89,7 @@ export default function Navbar() {
                   to='groups'
                   className='w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 transition-colors rounded-full grid place-items-center'>
                   <FaUserFriends className='text-xl' />
-               </NavLink>
+               </NavLink> */}
                <Menu as='div' className='relative'>
                   <div>
                      <Menu.Button className='flex rounded-full bg-gray-800 text-sm'>

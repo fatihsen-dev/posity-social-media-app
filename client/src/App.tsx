@@ -53,8 +53,8 @@ function App() {
                      <Route path='/' element={<Main />}>
                         <Route index element={<Home />} />
                         <Route path='user/:username' element={<Profile />} />
-                        <Route path='message' element={<Message />} />
-                        <Route path='groups' element={<Groups />} />
+                        {/* <Route path='message' element={<Message />} />
+                        <Route path='groups' element={<Groups />} /> */}
                         <Route path='post/:postid' element={<Post />} />
                      </Route>
                      <Route path='*' element={<NotFound />} />
