@@ -40,7 +40,7 @@ export default function Navbar() {
 
    return (
       <div className='bg-mainDarkV1'>
-         <div className='container h-14 flex w-full justify-between items-center p-2 bg-mainDarkV1 text-lightV1'>
+         <div className='container 2xl:px-0 sm:px-0 px-5 h-14 flex w-full justify-between items-center p-2 bg-mainDarkV1 text-lightV1'>
             <NavLink to='/' className='text-[26px] font-semibold leading-8 flex-[.2]'>
                Posity
             </NavLink>
