@@ -1,5 +1,5 @@
-import { TbMessageCircle } from "react-icons/tb";
-import { FaUserFriends } from "react-icons/fa";
+//import { TbMessageCircle } from "react-icons/tb";
+//import { FaUserFriends } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
@@ -35,16 +35,28 @@ export default function Navbar() {
       body.focus();
       body.removeAttribute("tabindex");
       setSearchValue("");
-      setUsers(allUser);
+      const result = allUser.filter((user: any, index: any) => {
+         return index < 5;
+      });
+      setUsers(result);
    };
 
    return (
       <div className='bg-mainDarkV1'>
-         <div className='container flex items-center justify-between w-full p-2 px-5 2xl:px-0 sm:px-0 h-14 bg-mainDarkV1 text-lightV1'>
-            <NavLink to='/' className='text-[26px] font-semibold leading-8 flex-[.2]'>
-               Posity
+         <div className='container flex items-center justify-between w-full p-2 px-5 2xl:px-0 sm:px-0 h-14 bg-mainDarkV1 text-lightV1 gap-5'>
+            <NavLink
+               to='/'
+               className='text-[26px] font-semibold leading-8 flex-[.2] flex items-center'>
+               <span className='2xl:inline-block sm:inline-block hidden'>Posity</span>
+               <img
+                  className='2xl:hidden sm:hidden inline-block w-8 h-8'
+                  src='../logo192.png'
+                  alt='.'
+               />
             </NavLink>
-            <div tabIndex={0} className='flex-[.4] relative h-auto group'>
+            <div
+               tabIndex={0}
+               className='2xl:flex-[.4] sm:flex-[.4] flex-1 z-10 relative h-auto group'>
                <input
                   value={searchValue}
                   onChange={searchHandle}
@@ -79,7 +91,7 @@ export default function Navbar() {
                      ))}
                </ul>
             </div>
-            <div className='flex items-center gap-3 z-10 flex-[.2] justify-end'>
+            <div className='flex items-center gap-3 z-10 flex-[.2] justify-center'>
                {/* <NavLink
                   to='message'
                   className='grid transition-colors rounded-full w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 place-items-center'>

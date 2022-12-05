@@ -55,20 +55,20 @@ export default function Profile() {
    return (
       <>
          {profileData ? (
-            <div className='flex flex-col gap-5 px-5 pt-5 2xl:flex-row lg:flex-row 2xl:gap-0 lg:gap-0 2xl:px-0 sm:px-0'>
-               <div className='flex-[0.4] bg-lightV1 flex flex-col'>
+            <div className='flex gap-5 flex-col px-5 pt-5 2xl:flex-row lg:flex-row 2xl:gap-0 lg:gap-0 2xl:px-0 sm:px-0'>
+               <div className='2xl:w-96 xl:w-80 lg:w-72 w-full bg-lightV1 flex flex-col'>
                   <div className='relative flex flex-col items-center justify-center'>
                      {profileData.banner ? (
                         <img
                            className='object-cover w-full rounded-sm h-36'
                            src={profileData.banner}
-                           alt={profileData.name}
+                           alt='Resim bulunamadı'
                         />
                      ) : (
                         <img
                            className='object-cover w-full rounded-sm h-36'
                            src='../assets/images/default.jpg'
-                           alt={profileData.name}
+                           alt='Resim bulunamadı'
                         />
                      )}
                      <div className='flex items-center justify-center w-full text-xl font-medium h-28 bg-lightV1'>
@@ -79,7 +79,7 @@ export default function Profile() {
                            <img
                               className='object-cover w-20 h-20 rounded-full'
                               src={profileData.avatar}
-                              alt={profileData.name}
+                              alt='Resim bulunamadı'
                            />
                         ) : (
                            <Avatar
@@ -98,26 +98,34 @@ export default function Profile() {
                   </div>
                   {allUser && (
                      <ul className='flex-col hidden gap-2 p-2 text-sm border-lightV3 2xl:flex lg:flex'>
-                        {allUser.map((user: any, index: number) => (
-                           <NavLink
-                              to={`/user/${user._id}`}
-                              className='flex items-center gap-1.5 bg-lightV3 p-1 rounded'
-                              key={index}>
-                              {user.avatar ? (
-                                 <img
-                                    className='object-cover rounded-full w-7 h-7'
-                                    src={user.avatar}
-                                    alt={user.name}
-                                 />
-                              ) : (
-                                 <Avatar
-                                    variant='beam'
-                                    size={28}
-                                    name={user.name}></Avatar>
-                              )}
-                              <span className='text-[17px]'>{user.name}</span>
-                           </NavLink>
-                        ))}
+                        {allUser.map((user: any, index: number) => {
+                           if (index < 5) {
+                              return (
+                                 <NavLink
+                                    key={index}
+                                    to={`/user/${user._id}`}
+                                    className='flex items-center gap-1.5 bg-lightV3 p-1 rounded'>
+                                    {user.avatar ? (
+                                       <img
+                                          className='object-cover rounded-full min-w-[28px] min-h-[28px] w-7 h-7'
+                                          src={user.avatar}
+                                          alt={user.name}
+                                       />
+                                    ) : (
+                                       <div>
+                                          <Avatar
+                                             variant='beam'
+                                             size={28}
+                                             name={user.name}></Avatar>
+                                       </div>
+                                    )}
+                                    <span className='text-[17px] min-w-[208px] w-52 whitespace-nowrap text-ellipsis overflow-hidden'>
+                                       {user.name}
+                                    </span>
+                                 </NavLink>
+                              );
+                           }
+                        })}
                      </ul>
                   )}
                </div>
