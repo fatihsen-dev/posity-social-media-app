@@ -22,13 +22,11 @@ export default function Login() {
          toast.success("Login success");
          const allUsersResponse = await getAllUsers();
          const postResponse = await getAllPost();
-         console.log(response);
          dispatch(userLogin(response.data));
          dispatch(setAllpost(postResponse.data));
          dispatch(allUserFunc(allUsersResponse.data));
          navigate("/");
       } catch (error: any) {
-         console.log(error.response);
          return toast.error(error.response.data.message);
       }
    };

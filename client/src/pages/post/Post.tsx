@@ -23,9 +23,7 @@ export default function Post() {
          try {
             const postResponse = await getOnePost(postid);
             setPost(postResponse.data);
-         } catch (error) {
-            console.log(error);
-         }
+         } catch (error) {}
       })();
    }, []);
 
@@ -35,9 +33,7 @@ export default function Post() {
          const postResponse = await getOnePost(postid);
          setPost(postResponse.data);
          dispatch(setAllpost(updatedPost.data));
-      } catch (error) {
-         console.log(error);
-      }
+      } catch (error) {}
    };
    const commentHandle = async (e: any, post: string, user: string) => {
       e.preventDefault();
@@ -52,7 +48,6 @@ export default function Post() {
          setPost(postResponse.data);
          e.target.text.value = "";
       } catch (error) {
-         console.log(error);
          toast.error("Comment send error");
       }
    };
@@ -119,7 +114,7 @@ export default function Post() {
                               alt={post.owner.name}
                            />
                         ) : (
-                           <div className='overflow-hidden rounded-full'>
+                           <div className='overflow-hidden w-10 h-10 rounded-full'>
                               <Avatar
                                  variant='beam'
                                  size={40}
@@ -176,14 +171,17 @@ export default function Post() {
                                           }
                                        />
                                     ) : (
-                                       <Avatar
-                                          variant='beam'
-                                          size={28}
-                                          name={
-                                             allUser.find(
-                                                (user: any) => user._id === comment.user
-                                             ).name
-                                          }></Avatar>
+                                       <div className='overflow-hidden w-7 h-7 rounded-full'>
+                                          <Avatar
+                                             variant='beam'
+                                             size={28}
+                                             name={
+                                                allUser.find(
+                                                   (user: any) =>
+                                                      user._id === comment.user
+                                                ).name
+                                             }></Avatar>
+                                       </div>
                                     )}
                                     <div className='w-full text-sm text-mainDarkV1'>
                                        <div className='flex justify-between'>

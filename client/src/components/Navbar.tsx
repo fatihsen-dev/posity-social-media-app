@@ -79,7 +79,7 @@ export default function Navbar() {
                                  alt={user.name}
                               />
                            ) : (
-                              <div className='overflow-hidden rounded-full'>
+                              <div className='overflow-hidden w-9 h-9 rounded-full'>
                                  <Avatar
                                     variant='beam'
                                     size={36}
@@ -112,7 +112,7 @@ export default function Navbar() {
                               alt={user.name}
                            />
                         ) : (
-                           <div className='overflow-hidden rounded-full'>
+                           <div className='overflow-hidden w-[34px] h-[34px] rounded-full'>
                               <Avatar variant='beam' size={34} name={user.name}></Avatar>
                            </div>
                         )}

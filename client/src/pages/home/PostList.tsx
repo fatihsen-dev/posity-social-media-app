@@ -19,9 +19,7 @@ export default function PostList() {
       try {
          const updatedPost = await likePost({ user: user._id, post: postid });
          dispatch(setAllpost(updatedPost.data));
-      } catch (error) {
-         console.log(error);
-      }
+      } catch (error) {}
    };
    const commentHandle = async (e: any, post: string, user: string) => {
       e.preventDefault();
@@ -34,7 +32,6 @@ export default function PostList() {
          dispatch(setAllpost(postResponse.data));
          e.target.text.value = "";
       } catch (error) {
-         console.log(error);
          toast.error("Comment send error");
       }
    };
@@ -70,7 +67,7 @@ export default function PostList() {
                                  }
                               />
                            ) : (
-                              <div className='overflow-hidden rounded-full'>
+                              <div className='overflow-hidden w-9 h-9 rounded-full'>
                                  <Avatar
                                     variant='beam'
                                     size={36}
@@ -185,14 +182,17 @@ export default function PostList() {
                                           }
                                        />
                                     ) : (
-                                       <Avatar
-                                          variant='beam'
-                                          size={28}
-                                          name={
-                                             allUser.find(
-                                                (user: any) => user._id === comment.user
-                                             ).name
-                                          }></Avatar>
+                                       <div className='overflow-hidden w-7 h-7 rounded-full'>
+                                          <Avatar
+                                             variant='beam'
+                                             size={28}
+                                             name={
+                                                allUser.find(
+                                                   (user: any) =>
+                                                      user._id === comment.user
+                                                ).name
+                                             }></Avatar>
+                                       </div>
                                     )}
                                     <div className='w-full text-sm text-mainDarkV1'>
                                        <div className='flex justify-between'>

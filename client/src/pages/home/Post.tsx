@@ -30,7 +30,6 @@ export default function Post() {
          const postResponse = await getAllPost();
          dispatch(setAllpost(postResponse.data));
       } catch (error) {
-         console.log(error);
       }
    };
 
@@ -53,7 +52,7 @@ export default function Post() {
                      className='rounded-full w-9 h-9'
                   />
                ) : (
-                  <div className='overflow-hidden rounded-full'>
+                  <div className='overflow-hidden w-9 h-9 rounded-full'>
                      <Avatar variant='beam' size={36} name={user.name}></Avatar>
                   </div>
                )}

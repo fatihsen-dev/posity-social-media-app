@@ -32,9 +32,7 @@ export default function Profile() {
          const rofileDataResponse = await getProfileUser(username);
          setProfileData(rofileDataResponse.data);
          dispatch(setAllpost(updatedPost.data));
-      } catch (error) {
-         console.log(error);
-      }
+      } catch (error) {}
    };
    const commentHandle = async (e: any, post: string, user: string) => {
       e.preventDefault();
@@ -47,7 +45,6 @@ export default function Profile() {
          dispatch(setAllpost(postResponse.data));
          e.target.text.value = "";
       } catch (error) {
-         console.log(error);
          toast.error("Comment send error");
       }
    };
@@ -82,11 +79,13 @@ export default function Profile() {
                               alt='Resim bulunamadı'
                            />
                         ) : (
-                           <Avatar
-                              square={false}
-                              name={profileData.name}
-                              variant='beam'
-                              size={80}></Avatar>
+                           <div className='overflow-hidden w-20 h-20 rounded-full'>
+                              <Avatar
+                                 square={false}
+                                 name={profileData.name}
+                                 variant='beam'
+                                 size={80}></Avatar>
+                           </div>
                         )}
                      </div>
                   </div>
@@ -112,7 +111,7 @@ export default function Profile() {
                                           alt={user.name}
                                        />
                                     ) : (
-                                       <div>
+                                       <div className='overflow-hidden w-7 h-7 rounded-full'>
                                           <Avatar
                                              variant='beam'
                                              size={28}
@@ -241,15 +240,18 @@ export default function Profile() {
                                                          }
                                                       />
                                                    ) : (
-                                                      <Avatar
-                                                         variant='beam'
-                                                         size={28}
-                                                         name={
-                                                            allUser.find(
-                                                               (user: any) =>
-                                                                  user._id === post.user
-                                                            ).name
-                                                         }></Avatar>
+                                                      <div className='overflow-hidden w-7 h-7 rounded-full'>
+                                                         <Avatar
+                                                            variant='beam'
+                                                            size={28}
+                                                            name={
+                                                               allUser.find(
+                                                                  (user: any) =>
+                                                                     user._id ===
+                                                                     post.user
+                                                               ).name
+                                                            }></Avatar>
+                                                      </div>
                                                    )}
                                                    <div className='w-full'>
                                                       <div className='flex items-center justify-between'>

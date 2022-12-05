@@ -24,7 +24,6 @@ export default function Register() {
          toast.success("Register success");
          navigate("/login");
       } catch (error: any) {
-         console.log(error.response);
          return toast.error(error.response.data.message);
       }
    };
