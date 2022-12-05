@@ -27,7 +27,7 @@ export const login = async (req, res) => {
       const comparedPassword = await bcrypt.compare(req.body.password, user.password);
 
       if (!comparedPassword) {
-         return res.send({ message: "Wrong password" });
+         return res.status(400).send({ message: "Wrong password" });
       }
 
       const { _id, name, email, admin, avatar } = user;
