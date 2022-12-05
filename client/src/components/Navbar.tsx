@@ -95,7 +95,7 @@ export default function Navbar() {
                      <Menu.Button className='flex rounded-full bg-gray-800 text-sm'>
                         {user.avatar ? (
                            <img
-                              className='w-6 h-6 object-cover rounded-full'
+                              className='w-9 h-9 object-cover rounded-full'
                               src={user.avatar}
                               alt={user.name}
                            />

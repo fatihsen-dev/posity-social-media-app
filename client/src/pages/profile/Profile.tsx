@@ -75,11 +75,19 @@ export default function Profile() {
                         {profileData.name}
                      </div>
                      <div className='absolute translate-y-4'>
-                        <Avatar
-                           square={false}
-                           name={profileData.name}
-                           variant='beam'
-                           size={80}></Avatar>
+                        {profileData.avatar ? (
+                           <img
+                              className='w-20 h-20 object-cover rounded-full'
+                              src={profileData.avatar}
+                              alt={profileData.name}
+                           />
+                        ) : (
+                           <Avatar
+                              square={false}
+                              name={profileData.name}
+                              variant='beam'
+                              size={80}></Avatar>
+                        )}
                      </div>
                   </div>
                   <div className='border-y border-lightV3 p-2 text-sm'>
@@ -96,7 +104,11 @@ export default function Profile() {
                               className='flex items-center gap-1.5 bg-lightV3 p-1 rounded'
                               key={index}>
                               {user.avatar ? (
-                                 <img src={user.avatar} alt={user.name} />
+                                 <img
+                                    className='w-7 h-7 object-cover rounded-full'
+                                    src={user.avatar}
+                                    alt={user.name}
+                                 />
                               ) : (
                                  <Avatar
                                     variant='beam'
@@ -122,9 +134,9 @@ export default function Profile() {
                                  id={`commentBtn${index}`}
                               />
                               <div className='flex flex-col gap-3'>
-                                 <div className='flex justify-between items-center'>
-                                    <span>{post.text}</span>
-                                    <span className='text-sm text-grayV2'>
+                                 <div className='flex items-center flex-col gap-2'>
+                                    <span className='w-full'>{post.text}</span>
+                                    <span className='text-sm ml-auto text-grayV2'>
                                        {formatDate(post.createdAt)}
                                     </span>
                                  </div>
@@ -195,10 +207,7 @@ export default function Profile() {
                                  {post.comments.count > 0 && (
                                     <ul className='flex-col gap-2 flex'>
                                        {posts
-                                          .filter(
-                                             (post: any) =>
-                                                post._id === "6387765551c0d0e3da82f3d1"
-                                          )[0]
+                                          .filter((p: any) => p._id === post._id)[0]
                                           .comments.comment.comments.map(
                                              (post: any, index: any) => (
                                                 <li
@@ -209,6 +218,7 @@ export default function Profile() {
                                                          user._id === post.user
                                                    ).avatar ? (
                                                       <img
+                                                         className='w-7 h-7 object-cover rounded-full'
                                                          src={
                                                             allUser.find(
                                                                (user: any) =>

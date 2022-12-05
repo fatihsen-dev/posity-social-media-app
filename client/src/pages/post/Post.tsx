@@ -159,9 +159,11 @@ export default function Post() {
                                  <li
                                     className='flex gap-2 p-2 bg-lightV3/70 rounded-sm'
                                     key={index}>
-                                    {comment.user.avatar ? (
+                                    {allUser.find(
+                                       (user: any) => user._id === comment.user
+                                    ).avatar ? (
                                        <img
-                                          className='w-9 h-9 object-cover rounded-full'
+                                          className='w-7 h-7 object-cover rounded-full'
                                           src={
                                              allUser.find(
                                                 (user: any) => user._id === comment.user
