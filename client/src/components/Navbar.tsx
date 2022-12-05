@@ -40,7 +40,7 @@ export default function Navbar() {
 
    return (
       <div className='bg-mainDarkV1'>
-         <div className='container 2xl:px-0 sm:px-0 px-5 h-14 flex w-full justify-between items-center p-2 bg-mainDarkV1 text-lightV1'>
+         <div className='container flex items-center justify-between w-full p-2 px-5 2xl:px-0 sm:px-0 h-14 bg-mainDarkV1 text-lightV1'>
             <NavLink to='/' className='text-[26px] font-semibold leading-8 flex-[.2]'>
                Posity
             </NavLink>
@@ -52,17 +52,17 @@ export default function Navbar() {
                   type='text'
                   placeholder='Search user...'
                />
-               <ul className='group-focus-within:flex hidden absolute w-full rounded-b-sm left-0 top-8 bg-mainDarkV1 flex-col'>
+               <ul className='absolute left-0 flex-col hidden w-full rounded-b-sm group-focus-within:flex top-8 bg-mainDarkV1'>
                   {users &&
                      users.map((user: any, key) => (
                         <NavLink
                            onClick={focusClear}
                            to={`user/${user._id}`}
-                           className='flex items-center gap-3 p-2 cursor-pointer hover:bg-mainDarkV2 transition-colors'
+                           className='flex items-center gap-3 p-2 transition-colors cursor-pointer hover:bg-mainDarkV2'
                            key={key}>
                            {user.avatar ? (
                               <img
-                                 className='w-6 h-6 object-cover rounded-full'
+                                 className='object-cover w-6 h-6 rounded-full'
                                  src={user.avatar}
                                  alt={user.name}
                               />
@@ -82,20 +82,20 @@ export default function Navbar() {
             <div className='flex items-center gap-3 z-10 flex-[.2] justify-end'>
                {/* <NavLink
                   to='message'
-                  className='w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 transition-colors rounded-full grid place-items-center'>
+                  className='grid transition-colors rounded-full w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 place-items-center'>
                   <TbMessageCircle className='text-xl' />
                </NavLink>
                <NavLink
                   to='groups'
-                  className='w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 transition-colors rounded-full grid place-items-center'>
+                  className='grid transition-colors rounded-full w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 place-items-center'>
                   <FaUserFriends className='text-xl' />
                </NavLink> */}
                <Menu as='div' className='relative'>
                   <div>
-                     <Menu.Button className='flex rounded-full bg-gray-800 text-sm'>
+                     <Menu.Button className='flex text-sm bg-gray-800 rounded-full'>
                         {user.avatar ? (
                            <img
-                              className='w-9 h-9 object-cover rounded-full'
+                              className='object-cover rounded-full w-9 h-9'
                               src={user.avatar}
                               alt={user.name}
                            />
@@ -114,12 +114,12 @@ export default function Navbar() {
                      leave='transition ease-in duration-75'
                      leaveFrom='transform opacity-100 scale-100'
                      leaveTo='transform opacity-0 scale-95'>
-                     <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg border border-lightV1/80 bg-mainDarkV1'>
+                     <Menu.Items className='absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white border rounded-md shadow-lg border-lightV1/80 bg-mainDarkV1'>
                         <Menu.Item>
                            {({ active }) => (
                               <NavLink
                                  to={`user/${user._id}`}
-                                 className='block font-medium px-4 py-2 text-sm text-gray-700'>
+                                 className='block px-4 py-2 text-sm font-medium text-gray-700'>
                                  Your Profile
                               </NavLink>
                            )}
@@ -128,7 +128,7 @@ export default function Navbar() {
                            {({ active }) => (
                               <button
                                  onClick={logoutHandle}
-                                 className='w-full block text-start font-medium px-4 py-2 text-sm text-gray-700'>
+                                 className='block w-full px-4 py-2 text-sm font-medium text-gray-700 text-start'>
                                  Sign out
                               </button>
                            )}

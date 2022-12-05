@@ -2,10 +2,10 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 const Main = () => {
    return (
-      <div className='flex flex-col h-full w-full'>
+      <div className='flex flex-col w-full h-full'>
          <Navbar />
-         <div className='overflow-auto h-full'>
-            <div className='container mx-auto h-full'>
+         <div className='h-full overflow-auto'>
+            <div className='container h-full mx-auto'>
                <div className='flex-1'>
                   <Outlet />
                </div>

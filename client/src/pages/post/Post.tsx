@@ -60,7 +60,7 @@ export default function Post() {
    return (
       <>
          {post && (
-            <div className='w-full flex 2xl:flex-row xl:flex-row flex-col gap-6 py-5 2xl:px-0 md:px-0 px-5 items-start'>
+            <div className='flex flex-col items-start w-full gap-6 px-5 py-5 2xl:flex-row xl:flex-row 2xl:px-0 md:px-0'>
                <div className='bg-lightV1 flex-1 rounded-sm p-3 flex flex-col gap-2.5 w-full'>
                   <span>{post.text}</span>
                   {post.image && (
@@ -71,14 +71,14 @@ export default function Post() {
                      />
                   )}
 
-                  <div className='2xl:text-base sm:text-base text-sm border-t-lightV4 border-t pt-2 flex justify-around items-center text-mainDarkV1'>
+                  <div className='flex items-center justify-around pt-2 text-sm border-t 2xl:text-base sm:text-base border-t-lightV4 text-mainDarkV1'>
                      <button
                         onClick={() => likehandle(post._id)}
-                        className='flex items-center rounded-sm bg-lightV3 gap-2 group'>
-                        <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                        className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
+                        <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
                            {post.likes.count}
                         </span>
-                        <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                        <div className='flex items-center gap-1 px-2 rounded-sm bg-lightV4'>
                            {post.likes.users.indexOf(user._id) !== -1 ? (
                               <BsHeartFill className='text-[#993333] transition-all group-hover:scale-110' />
                            ) : (
@@ -87,20 +87,20 @@ export default function Post() {
                            <span>Like</span>
                         </div>
                      </button>
-                     <button className='flex items-center rounded-sm bg-lightV3 gap-2 group'>
-                        <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                     <button className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
+                        <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
                            {post.comments.count}
                         </span>
-                        <div className='cursor-pointer flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                        <div className='flex items-center gap-1 px-2 rounded-sm cursor-pointer bg-lightV4'>
                            <BiCommentDetail className='text-xl transition-all group-hover:scale-110' />
                            <span>Comment</span>
                         </div>
                      </button>
-                     <button className='2xl:text-base sm:text-base text-sm flex items-center rounded-sm bg-lightV3 gap-2 group'>
-                        <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                     <button className='flex items-center gap-2 text-sm rounded-sm 2xl:text-base sm:text-base bg-lightV3 group'>
+                        <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
                            0
                         </span>
-                        <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                        <div className='flex items-center gap-1 px-2 rounded-sm bg-lightV4'>
                            <AiOutlineShareAlt className='text-xl transition-all group-hover:scale-110' />
                            <span>Share</span>
                         </div>
@@ -114,7 +114,7 @@ export default function Post() {
                         className='flex gap-1.5 items-center'>
                         {post.owner.avatar ? (
                            <img
-                              className='w-10 h-10 object-cover rounded-full'
+                              className='object-cover w-10 h-10 rounded-full'
                               src={post.owner.avatar}
                               alt={post.owner.name}
                            />
@@ -136,7 +136,7 @@ export default function Post() {
                   </div>
                   <form
                      onSubmit={(e) => commentHandle(e, post._id, user._id)}
-                     className='flex 2xl:flex-row sm:flex-row flex-col gap-3 items-start'>
+                     className='flex flex-col items-start gap-3 2xl:flex-row sm:flex-row'>
                      <textarea
                         onInput={(e: any) => {
                            e.target.style.height = "52px";
@@ -146,24 +146,24 @@ export default function Post() {
                         className='placeholder-mainDarkV2/60 w-full max-h-28 resize-none min-h-0-[100px] bg-lightV3 rounded-sm p-1.5 text-sm flex-1'
                         name='text'></textarea>
                      <button
-                        className='ml-auto px-7 py-1 bg-mainDarkV2 2xl:w-auto sm:w-auto w-full text-lightV1 rounded-sm'
+                        className='w-full py-1 ml-auto rounded-sm px-7 bg-mainDarkV2 2xl:w-auto sm:w-auto text-lightV1'
                         type='submit'>
                         Send
                      </button>
                   </form>
-                  <ul className='flex-1 rounded-sm flex flex-col gap-2'>
+                  <ul className='flex flex-col flex-1 gap-2 rounded-sm'>
                      {post.comments.comment && (
                         <>
                            {post.comments.comment.comments.map(
                               (comment: any, index: number) => (
                                  <li
-                                    className='flex gap-2 p-2 bg-lightV3/70 rounded-sm'
+                                    className='flex gap-2 p-2 rounded-sm bg-lightV3/70'
                                     key={index}>
                                     {allUser.find(
                                        (user: any) => user._id === comment.user
                                     ).avatar ? (
                                        <img
-                                          className='w-7 h-7 object-cover rounded-full'
+                                          className='object-cover rounded-full w-7 h-7'
                                           src={
                                              allUser.find(
                                                 (user: any) => user._id === comment.user
@@ -185,9 +185,9 @@ export default function Post() {
                                              ).name
                                           }></Avatar>
                                     )}
-                                    <div className='text-sm w-full text-mainDarkV1'>
+                                    <div className='w-full text-sm text-mainDarkV1'>
                                        <div className='flex justify-between'>
-                                          <span className='font-medium text-base'>
+                                          <span className='text-base font-medium'>
                                              {
                                                 allUser.find(
                                                    (user: any) =>
@@ -199,7 +199,7 @@ export default function Post() {
                                              {formatDateMin(comment.createdAt)}
                                           </span>
                                        </div>
-                                       <span className='rounded-sm py-1 flex-1 text-mainDarkV1/80'>
+                                       <span className='flex-1 py-1 rounded-sm text-mainDarkV1/80'>
                                           {comment.text}
                                        </span>
                                     </div>

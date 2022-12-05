@@ -43,14 +43,14 @@ export default function Post() {
    return (
       <form
          onSubmit={formHandle}
-         className='bg-lightV1 p-3 flex flex-col gap-3 rounded-sm w-full'>
-         <div className='flex gap-1 items-center'>
+         className='flex flex-col w-full gap-3 p-3 rounded-sm bg-lightV1'>
+         <div className='flex items-center gap-1'>
             <NavLink className='flex items-center gap-1' to={`/user/${user._id}`}>
                {user.avatar ? (
                   <img
                      src={user.avatar}
                      alt={user.name}
-                     className='w-9 h-9 rounded-full'
+                     className='rounded-full w-9 h-9'
                   />
                ) : (
                   <div className='overflow-hidden rounded-full'>
@@ -59,7 +59,7 @@ export default function Post() {
                )}
                <span className='text-lg font-medium'>{user.name}</span>
             </NavLink>
-            <div className='flex ml-auto items-center gap-3'>
+            <div className='flex items-center gap-3 ml-auto'>
                <input
                   onChange={fileHandle}
                   ref={inputRef}
@@ -88,11 +88,11 @@ export default function Post() {
                ref={textareaRef}
                name='text'
                placeholder='Write something...'
-               className='resize-none max-h-72 flex-1 rounded-sm bg-lightV3 px-2 py-1 placeholder-grayV1/70 font-medium h-32'></textarea>
+               className='flex-1 h-32 px-2 py-1 font-medium rounded-sm resize-none max-h-72 bg-lightV3 placeholder-grayV1/70'></textarea>
             {filename.length > 0 && (
-               <div className='relative bg-lightV3 p-2 rounded-sm'>
+               <div className='relative p-2 rounded-sm bg-lightV3'>
                   <img
-                     className='w-28 h-28 rounded-sm object-cover'
+                     className='object-cover rounded-sm w-28 h-28'
                      src={filename}
                      alt={filename}
                   />

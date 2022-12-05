@@ -29,23 +29,23 @@ export default function Register() {
       }
    };
    return (
-      <div className='h-full flex'>
-         <div className='flex-1 2xl:inline-block lg:inline-block hidden'>
-            <img className='w-full h-full object-cover' src={Image} alt='' />
+      <div className='flex h-full'>
+         <div className='flex-1 hidden 2xl:inline-block lg:inline-block'>
+            <img className='object-cover w-full h-full' src={Image} alt='' />
          </div>
-         <div className='flex-1 relative flex flex-col px-4'>
-            <span className='block w-full text-end text-4xl font-bold py-4 px-5'>
+         <div className='relative flex flex-col flex-1 px-4'>
+            <span className='block w-full px-5 py-4 text-4xl font-bold text-end'>
                Posity
             </span>
-            <div className='flex-1 flex'>
+            <div className='flex flex-1'>
                <form
                   onSubmit={registerhandle}
                   className='m-auto flex flex-col gap-7 2xl:w-[440px] sm:w-[440px] w-full'>
-                  <span className='font-bold text-4xl'>Register</span>
+                  <span className='text-4xl font-bold'>Register</span>
                   <div className='flex flex-col'>
                      <span className='text-sm text-grayV1/70'>Full Name</span>
                      <input
-                        className='text-xl placeholder-grayV1/70 rounded px-2 py-1 shadow-sm border border-mainDarkV1/20'
+                        className='px-2 py-1 text-xl border rounded shadow-sm placeholder-grayV1/70 border-mainDarkV1/20'
                         name='name'
                         type='text'
                         placeholder='Franklin Duncan'
@@ -54,7 +54,7 @@ export default function Register() {
                   <div className='flex flex-col'>
                      <span className='text-sm text-grayV1/70'>Email address</span>
                      <input
-                        className='text-xl placeholder-grayV1/70 rounded px-2 py-1 shadow-sm border border-mainDarkV1/20'
+                        className='px-2 py-1 text-xl border rounded shadow-sm placeholder-grayV1/70 border-mainDarkV1/20'
                         type='text'
                         name='email'
                         placeholder='example@gmail.com'
@@ -63,7 +63,7 @@ export default function Register() {
                   <div className='flex flex-col'>
                      <span className='text-sm text-grayV1/70'>Password</span>
                      <input
-                        className='text-xl placeholder-grayV1/70 rounded px-2 py-1 shadow-sm border border-mainDarkV1/20'
+                        className='px-2 py-1 text-xl border rounded shadow-sm placeholder-grayV1/70 border-mainDarkV1/20'
                         type='password'
                         name='password'
                         placeholder='**********'
@@ -72,7 +72,7 @@ export default function Register() {
                   <div className='flex flex-col'>
                      <span className='text-sm text-grayV1/70'>Confrim Password</span>
                      <input
-                        className='text-xl placeholder-grayV1/70 rounded px-2 py-1 shadow-sm border border-mainDarkV1/20'
+                        className='px-2 py-1 text-xl border rounded shadow-sm placeholder-grayV1/70 border-mainDarkV1/20'
                         type='password'
                         name='confrim'
                         placeholder='**********'
@@ -83,7 +83,7 @@ export default function Register() {
                      type='submit'>
                      Register
                   </button>
-                  <div className='text-end underline leading-3'>
+                  <div className='leading-3 underline text-end'>
                      <NavLink to='/login'>Go to login page</NavLink>
                   </div>
                </form>

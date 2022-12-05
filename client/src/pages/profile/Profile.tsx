@@ -55,29 +55,29 @@ export default function Profile() {
    return (
       <>
          {profileData ? (
-            <div className='flex 2xl:flex-row lg:flex-row flex-col 2xl:gap-0 lg:gap-0 gap-5 pt-5 2xl:px-0 sm:px-0 px-5'>
+            <div className='flex flex-col gap-5 px-5 pt-5 2xl:flex-row lg:flex-row 2xl:gap-0 lg:gap-0 2xl:px-0 sm:px-0'>
                <div className='flex-[0.4] bg-lightV1 flex flex-col'>
-                  <div className='flex flex-col relative justify-center items-center'>
+                  <div className='relative flex flex-col items-center justify-center'>
                      {profileData.banner ? (
                         <img
-                           className='h-36 object-cover w-full rounded-sm'
+                           className='object-cover w-full rounded-sm h-36'
                            src={profileData.banner}
                            alt={profileData.name}
                         />
                      ) : (
                         <img
-                           className='h-36 object-cover w-full rounded-sm'
+                           className='object-cover w-full rounded-sm h-36'
                            src='../assets/images/default.jpg'
                            alt={profileData.name}
                         />
                      )}
-                     <div className='h-28 w-full bg-lightV1 flex justify-center items-center text-xl font-medium'>
+                     <div className='flex items-center justify-center w-full text-xl font-medium h-28 bg-lightV1'>
                         {profileData.name}
                      </div>
                      <div className='absolute translate-y-4'>
                         {profileData.avatar ? (
                            <img
-                              className='w-20 h-20 object-cover rounded-full'
+                              className='object-cover w-20 h-20 rounded-full'
                               src={profileData.avatar}
                               alt={profileData.name}
                            />
@@ -90,14 +90,14 @@ export default function Profile() {
                         )}
                      </div>
                   </div>
-                  <div className='border-y border-lightV3 p-2 text-sm'>
+                  <div className='p-2 text-sm border-y border-lightV3'>
                      <div className='bg-lightV2 p-1.5'>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
                         mollitia, molestiae quas vel sint commodi repudiandae consequuntur
                      </div>
                   </div>
                   {allUser && (
-                     <ul className='border-lightV3 p-2 text-sm 2xl:flex lg:flex hidden flex-col gap-2'>
+                     <ul className='flex-col hidden gap-2 p-2 text-sm border-lightV3 2xl:flex lg:flex'>
                         {allUser.map((user: any, index: number) => (
                            <NavLink
                               to={`/user/${user._id}`}
@@ -105,7 +105,7 @@ export default function Profile() {
                               key={index}>
                               {user.avatar ? (
                                  <img
-                                    className='w-7 h-7 object-cover rounded-full'
+                                    className='object-cover rounded-full w-7 h-7'
                                     src={user.avatar}
                                     alt={user.name}
                                  />
@@ -126,7 +126,7 @@ export default function Profile() {
                      <ul className='2xl:w-[80%] lg:w-[80%] w-full mx-auto flex flex-col gap-4 rounded-sm h-full'>
                         {profileData.posts.post.map((post: any, index: number) => (
                            <li
-                              className='flex bg-lightV1 rounded-sm flex-col p-3'
+                              className='flex flex-col p-3 rounded-sm bg-lightV1'
                               key={index}>
                               <input
                                  className='hidden peer'
@@ -134,9 +134,9 @@ export default function Profile() {
                                  id={`commentBtn${index}`}
                               />
                               <div className='flex flex-col gap-3'>
-                                 <div className='flex items-center flex-col gap-2'>
+                                 <div className='flex flex-col items-center gap-2'>
                                     <span className='w-full'>{post.text}</span>
-                                    <span className='text-sm ml-auto text-grayV2'>
+                                    <span className='ml-auto text-sm text-grayV2'>
                                        {formatDate(post.createdAt)}
                                     </span>
                                  </div>
@@ -148,14 +148,14 @@ export default function Profile() {
                                     />
                                  )}
                               </div>
-                              <div className='2xl:text-base sm:text-base text-sm mt-2 border-t-lightV4 border-t pt-2 flex justify-around items-center'>
+                              <div className='flex items-center justify-around pt-2 mt-2 text-sm border-t 2xl:text-base sm:text-base border-t-lightV4'>
                                  <button
                                     onClick={() => likehandle(post._id)}
-                                    className='flex items-center rounded-sm bg-lightV3 gap-2 group'>
-                                    <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                                    className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
+                                    <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
                                        {post.likes.count}
                                     </span>
-                                    <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                                    <div className='flex items-center gap-1 px-2 rounded-sm bg-lightV4'>
                                        {post.likes.users.indexOf(user._id) !== -1 ? (
                                           <BsHeartFill className='text-[#993333] transition-all group-hover:scale-110' />
                                        ) : (
@@ -164,31 +164,31 @@ export default function Profile() {
                                        <span>Like</span>
                                     </div>
                                  </button>
-                                 <button className='flex items-center rounded-sm bg-lightV3 gap-2 group'>
-                                    <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                                 <button className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
+                                    <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
                                        {post.comments.count}
                                     </span>
                                     <label
                                        htmlFor={`commentBtn${index}`}
-                                       className='cursor-pointer flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                                       className='flex items-center gap-1 px-2 rounded-sm cursor-pointer bg-lightV4'>
                                        <BiCommentDetail className='text-xl transition-all group-hover:scale-110' />
                                        <span>Comment</span>
                                     </label>
                                  </button>
-                                 <button className='flex items-center rounded-sm bg-lightV3 gap-2 group'>
-                                    <span className='2xl:inline-block sm:inline-block hidden pl-2'>
+                                 <button className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
+                                    <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
                                        0
                                     </span>
-                                    <div className='flex items-center rounded-sm bg-lightV4 px-2 gap-1'>
+                                    <div className='flex items-center gap-1 px-2 rounded-sm bg-lightV4'>
                                        <AiOutlineShareAlt className='text-xl transition-all group-hover:scale-110' />
                                        <span>Share</span>
                                     </div>
                                  </button>
                               </div>
-                              <div className='peer-checked:flex hidden flex-col gap-3 pt-3'>
+                              <div className='flex-col hidden gap-3 pt-3 peer-checked:flex'>
                                  <form
                                     onSubmit={(e) => commentHandle(e, post._id, user._id)}
-                                    className='flex xl:flex-row sm:flex-row gap-3 flex-col items-start'>
+                                    className='flex flex-col items-start gap-3 xl:flex-row sm:flex-row'>
                                     <textarea
                                        onInput={(e: any) => {
                                           e.target.style.height = "52px";
@@ -199,13 +199,13 @@ export default function Profile() {
                                        className='placeholder-mainDarkV2/60 2xl:w-auto sm:w-auto w-full max-h-28 resize-none min-h-0-[100px] bg-lightV3 rounded-sm p-1.5 text-sm flex-1'
                                        name='text'></textarea>
                                     <button
-                                       className='ml-auto px-7 py-1 2xl:w-auto sm:w-auto w-full bg-mainDarkV2 text-lightV1 rounded-sm'
+                                       className='w-full py-1 ml-auto rounded-sm px-7 2xl:w-auto sm:w-auto bg-mainDarkV2 text-lightV1'
                                        type='submit'>
                                        Send
                                     </button>
                                  </form>
                                  {post.comments.count > 0 && (
-                                    <ul className='flex-col gap-2 flex'>
+                                    <ul className='flex flex-col gap-2'>
                                        {posts
                                           .filter((p: any) => p._id === post._id)[0]
                                           .comments.comment.comments.map(
@@ -218,7 +218,7 @@ export default function Profile() {
                                                          user._id === post.user
                                                    ).avatar ? (
                                                       <img
-                                                         className='w-7 h-7 object-cover rounded-full'
+                                                         className='object-cover rounded-full w-7 h-7'
                                                          src={
                                                             allUser.find(
                                                                (user: any) =>
@@ -254,7 +254,7 @@ export default function Profile() {
                                                                ).name
                                                             }
                                                          </span>
-                                                         <span className='text-grayV1 text-sm'>
+                                                         <span className='text-sm text-grayV1'>
                                                             {formatDateMin(
                                                                post.createdAt
                                                             )}
