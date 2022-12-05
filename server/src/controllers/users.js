@@ -74,12 +74,19 @@ export const register = async (req, res) => {
       return res.status(400).send({ message: error.details[0].message });
    }
    const { name, email, password, avatar } = req.body;
+   const found = name.match(/^([a-zA-ZıİşŞüÜğĞçÇöÖ]+\s)*[a-zA-ZıİşŞüÜğĞçÇöÖ]+$/g);
+
+   if (found === null) {
+      return res.status(417).send({
+         message: "Invalid Full Name",
+      });
+   }
 
    try {
       const userControl = await User.findOne({ email: email });
       if (userControl) {
          return res.status(302).send({
-            message: "There is such a member",
+            message: "This email is already in use",
          });
       }
 
