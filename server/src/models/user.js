@@ -23,7 +23,7 @@ const userSchema = new Schema(
 
 export const userValidation = (user) => {
    return Joi.object({
-      name: Joi.string().min(6).max(60).required(),
+      name: Joi.string().min(6).max(20).required(),
       email: Joi.string().required().email(),
       password: Joi.string().min(6).max(60).required(),
       avatar: Joi.string().max(300),
