@@ -8,7 +8,7 @@ import { setAllpost } from "../../store/posts/post";
 import Avatar from "boring-avatars";
 import { NavLink } from "react-router-dom";
 
-export default function Post() {
+export default function PostForm() {
    const { user } = useSelector((state: RootState) => state.userData);
    const [filename, setFileName] = useState("");
    const dispatch = useDispatch();
@@ -29,8 +29,7 @@ export default function Post() {
          textareaRef.current.value = "";
          const postResponse = await getAllPost();
          dispatch(setAllpost(postResponse.data));
-      } catch (error) {
-      }
+      } catch (error) {}
    };
 
    const fileHandle = (e: any) => {
@@ -52,9 +51,7 @@ export default function Post() {
                      className='rounded-full w-9 h-9'
                   />
                ) : (
-                  <div className='overflow-hidden w-9 h-9 rounded-full'>
-                     <Avatar variant='beam' size={36} name={user.name}></Avatar>
-                  </div>
+                  <Avatar variant='beam' size={36} name={user.name}></Avatar>
                )}
                <span className='text-lg font-medium'>{user.name}</span>
             </NavLink>

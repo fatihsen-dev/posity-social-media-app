@@ -16,7 +16,6 @@ import { Control, getAllPost, getAllUsers } from "./axios";
 import Loading from "./components/Loading";
 import Post from "./pages/post/Post";
 import { setAllpost } from "./store/posts/post";
-
 function App() {
    const { user } = useSelector((state: RootState) => state.userData);
    const navigate = useNavigate();

@@ -4,13 +4,13 @@ import { getProfileUser, likePost, sendComment } from "../../axios";
 import Avatar from "boring-avatars";
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
-import Post from "../home/Post";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { setAllpost } from "../../store/posts/post";
 import { formatDate, formatDateMin } from "../../helpers/dateFormat";
 import toast from "react-hot-toast";
+import PostForm from "../home/PostForm";
 
 export default function Profile() {
    const [profileData, setProfileData] = useState<any>(null);
@@ -79,13 +79,11 @@ export default function Profile() {
                               alt='Resim bulunamadı'
                            />
                         ) : (
-                           <div className='overflow-hidden w-20 h-20 rounded-full'>
-                              <Avatar
-                                 square={false}
-                                 name={profileData.name}
-                                 variant='beam'
-                                 size={80}></Avatar>
-                           </div>
+                           <Avatar
+                              square={false}
+                              name={profileData.name}
+                              variant='beam'
+                              size={80}></Avatar>
                         )}
                      </div>
                   </div>
@@ -111,12 +109,10 @@ export default function Profile() {
                                           alt={user.name}
                                        />
                                     ) : (
-                                       <div className='overflow-hidden w-7 h-7 rounded-full'>
-                                          <Avatar
-                                             variant='beam'
-                                             size={28}
-                                             name={user.name}></Avatar>
-                                       </div>
+                                       <Avatar
+                                          variant='beam'
+                                          size={28}
+                                          name={user.name}></Avatar>
                                     )}
                                     <span className='text-[17px] min-w-[208px] w-52 whitespace-nowrap text-ellipsis overflow-hidden'>
                                        {user.name}
@@ -240,18 +236,15 @@ export default function Profile() {
                                                          }
                                                       />
                                                    ) : (
-                                                      <div className='overflow-hidden w-7 h-7 rounded-full'>
-                                                         <Avatar
-                                                            variant='beam'
-                                                            size={28}
-                                                            name={
-                                                               allUser.find(
-                                                                  (user: any) =>
-                                                                     user._id ===
-                                                                     post.user
-                                                               ).name
-                                                            }></Avatar>
-                                                      </div>
+                                                      <Avatar
+                                                         variant='beam'
+                                                         size={28}
+                                                         name={
+                                                            allUser.find(
+                                                               (user: any) =>
+                                                                  user._id === post.user
+                                                            ).name
+                                                         }></Avatar>
                                                    )}
                                                    <div className='w-full'>
                                                       <div className='flex items-center justify-between'>
@@ -287,7 +280,7 @@ export default function Profile() {
                      <>
                         <ul className='2xl:w-[80%] lg:w-[80%] w-full mx-auto flex justify-center items-center flex-col gap-4 bg-lightV1 rounded-sm h-full'>
                            {username === user._id ? (
-                              <Post />
+                              <PostForm />
                            ) : (
                               <div className='p-10'>
                                  Kullanıcının herhangi bir gönderisi yok.

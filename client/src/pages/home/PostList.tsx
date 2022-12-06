@@ -1,26 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { likePost, sendComment } from "../../axios";
+import { sendComment } from "../../axios";
 import { setAllpost } from "../../store/posts/post";
-import { BiCommentDetail } from "react-icons/bi";
-import { BsHeart, BsHeartFill } from "react-icons/bs";
-import { AiOutlineShareAlt } from "react-icons/ai";
 import toast from "react-hot-toast";
-import Avatar from "boring-avatars";
-import { NavLink } from "react-router-dom";
-import { formatDate, formatDateMin } from "../../helpers/dateFormat";
+import Avatar from "../../components/Avatar";
+import { formatDateMin } from "../../helpers/dateFormat";
+import User from "../../components/Post/User";
+import Buttons from "../../components/Post/Buttons";
 
 export default function PostList() {
    const { posts } = useSelector((state: RootState) => state.postsData);
    const { user, allUser } = useSelector((state: RootState) => state.userData);
    const dispatch = useDispatch();
 
-   const likehandle = async (postid: String) => {
-      try {
-         const updatedPost = await likePost({ user: user._id, post: postid });
-         dispatch(setAllpost(updatedPost.data));
-      } catch (error) {}
-   };
    const commentHandle = async (e: any, post: string, user: string) => {
       e.preventDefault();
       try {
@@ -39,6 +31,7 @@ export default function PostList() {
    return (
       <ul className='2xl:w-[700px] xl:w-[700px] lg:w-[700px] md:w-[700px] sm:w-auto w-auto gap-4 flex flex-col pb-10'>
          {posts &&
+            allUser &&
             posts.map((post: any, index: number) => (
                <li className='flex flex-col gap-2 rounded-sm bg-lightV1' key={index}>
                   <input
@@ -47,51 +40,11 @@ export default function PostList() {
                      id={`checkbox${index}`}
                   />
                   <div className='flex flex-col gap-2 p-3'>
-                     {allUser && (
-                        <NavLink
-                           to={`user/${
-                              allUser.find((user: any) => user._id === post.owner)._id
-                           }`}
-                           className='flex items-center gap-2 mr-auto select-none'>
-                           {allUser.find((user: any) => user._id === post.owner)
-                              .avatar ? (
-                              <img
-                                 className='object-cover rounded-full w-9 h-9'
-                                 src={
-                                    allUser.find((user: any) => user._id === post.owner)
-                                       .avatar
-                                 }
-                                 alt={
-                                    allUser.find((user: any) => user._id === post.owner)
-                                       .name
-                                 }
-                              />
-                           ) : (
-                              <div className='overflow-hidden w-9 h-9 rounded-full'>
-                                 <Avatar
-                                    variant='beam'
-                                    size={36}
-                                    name={
-                                       allUser.find(
-                                          (user: any) => user._id === post.owner
-                                       ).name
-                                    }></Avatar>
-                              </div>
-                           )}
-
-                           <div className='flex flex-col justify-center'>
-                              <span className='font-medium leading-5'>
-                                 {
-                                    allUser.find((user: any) => user._id === post.owner)
-                                       .name
-                                 }
-                              </span>
-                              <span className='text-xs text-grayV2'>
-                                 {formatDate(post.createdAt)}
-                              </span>
-                           </div>
-                        </NavLink>
-                     )}
+                     <User
+                        userid={allUser.find((user: any) => user._id === post.owner)}
+                        owner={post.owner}
+                        date={post.createdAt}
+                     />
                      <div className='flex flex-col gap-1'>
                         <span>{post.text}</span>
                         {post.image && (
@@ -102,43 +55,14 @@ export default function PostList() {
                            />
                         )}
                      </div>
-                     <div className='flex items-center justify-around pt-2 text-sm border-t 2xl:text-base sm:text-base border-t-lightV4 text-mainDarkV1'>
-                        <button
-                           onClick={() => likehandle(post._id)}
-                           className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
-                           <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
-                              {post.likes.count}
-                           </span>
-                           <div className='flex items-center gap-1 px-2 rounded-sm bg-lightV4'>
-                              {post.likes.users.indexOf(user._id) !== -1 ? (
-                                 <BsHeartFill className='text-[#993333] transition-all group-hover:scale-110' />
-                              ) : (
-                                 <BsHeart className='transition-all group-hover:scale-110' />
-                              )}
-                              <span>Like</span>
-                           </div>
-                        </button>
-                        <button className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
-                           <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
-                              {post.comments.count}
-                           </span>
-                           <label
-                              htmlFor={`checkbox${index}`}
-                              className='flex items-center gap-1 px-2 rounded-sm cursor-pointer bg-lightV4'>
-                              <BiCommentDetail className='text-xl transition-all group-hover:scale-110' />
-                              <span>Comment</span>
-                           </label>
-                        </button>
-                        <button className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
-                           <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
-                              0
-                           </span>
-                           <div className='flex items-center gap-1 px-2 rounded-sm bg-lightV4'>
-                              <AiOutlineShareAlt className='text-xl transition-all group-hover:scale-110' />
-                              <span>Share</span>
-                           </div>
-                        </button>
-                     </div>
+                     <Buttons
+                        likedUser={post.likes.users.indexOf(user._id)}
+                        likeCount={post.likes.count}
+                        commentCount={post.comments.count}
+                        userId={user._id}
+                        postId={post._id}
+                        index={index}
+                     />
                   </div>
                   <div className='flex-col hidden pb-3 peer-checked:flex'>
                      <form
@@ -175,24 +99,23 @@ export default function PostList() {
                                                 (user: any) => user._id === comment.user
                                              ).avatar
                                           }
-                                          alt={
+                                          alt='img not found'
+                                       />
+                                    ) : (
+                                       <Avatar
+                                          variant='beam'
+                                          size={28}
+                                          name={
                                              allUser.find(
                                                 (user: any) => user._id === comment.user
                                              ).name
                                           }
+                                          src={
+                                             allUser.find(
+                                                (user: any) => user._id === comment.user
+                                             ).avatar
+                                          }
                                        />
-                                    ) : (
-                                       <div className='overflow-hidden w-7 h-7 rounded-full'>
-                                          <Avatar
-                                             variant='beam'
-                                             size={28}
-                                             name={
-                                                allUser.find(
-                                                   (user: any) =>
-                                                      user._id === comment.user
-                                                ).name
-                                             }></Avatar>
-                                       </div>
                                     )}
                                     <div className='w-full text-sm text-mainDarkV1'>
                                        <div className='flex justify-between'>

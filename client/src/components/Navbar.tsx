@@ -6,11 +6,11 @@ import { Fragment, useState } from "react";
 import { userLogout } from "../store/auth/user";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import Avatar from "boring-avatars";
+import Avatar from "../components/Avatar";
 
 export default function Navbar() {
    const [searchValue, setSearchValue] = useState("");
-   const [users, setUsers] = useState([]);
+   const [users, setUsers] = useState<any>([]);
    const { user, allUser } = useSelector((state: RootState) => state.userData);
    const dispatch = useDispatch();
    const navigate = useNavigate();
@@ -22,12 +22,20 @@ export default function Navbar() {
    };
    const searchHandle = (e: any) => {
       setSearchValue(e.target.value);
-      const result = allUser.filter((user: any, index: any) => {
-         return (
-            index < 6 && user.name.toLowerCase().includes(e.target.value.toLowerCase())
-         );
-      });
-      setUsers(result);
+      if (e.target.value.length > 0) {
+         const result = allUser.filter((user: any, index: any) => {
+            return user.name.toLowerCase().includes(e.target.value.toLowerCase());
+         });
+         let data = [];
+         for (let res in result) {
+            if (Number(res) < 5) {
+               data.push(result[res]);
+            }
+         }
+         setUsers(data);
+      } else {
+         setUsers([]);
+      }
    };
    const focusClear = (e: any) => {
       const body = document.body;
@@ -35,10 +43,7 @@ export default function Navbar() {
       body.focus();
       body.removeAttribute("tabindex");
       setSearchValue("");
-      const result = allUser.filter((user: any, index: any) => {
-         return index < 5;
-      });
-      setUsers(result);
+      setUsers([]);
    };
 
    return (
@@ -66,25 +71,19 @@ export default function Navbar() {
                />
                <ul className='absolute left-0 flex-col hidden w-full rounded-b-sm group-focus-within:flex top-8 bg-mainDarkV1'>
                   {users &&
-                     users.map((user: any, key) => (
+                     users.map((user: any, index: any) => (
                         <NavLink
                            onClick={focusClear}
                            to={`user/${user._id}`}
                            className='flex items-center gap-3 p-2 transition-colors cursor-pointer hover:bg-mainDarkV2'
-                           key={key}>
-                           {user.avatar ? (
-                              <img
-                                 className='object-cover w-6 h-6 rounded-full'
+                           key={index}>
+                           {user.avatar && (
+                              <Avatar
+                                 variant='beam'
+                                 size={36}
+                                 name={user.name}
                                  src={user.avatar}
-                                 alt={user.name}
                               />
-                           ) : (
-                              <div className='overflow-hidden w-9 h-9 rounded-full'>
-                                 <Avatar
-                                    variant='beam'
-                                    size={36}
-                                    name={user.name}></Avatar>
-                              </div>
                            )}
                            <span className='flex-1'>{user.name}</span>
                         </NavLink>
@@ -105,17 +104,12 @@ export default function Navbar() {
                <Menu as='div' className='relative'>
                   <div>
                      <Menu.Button className='flex text-sm bg-gray-800 rounded-full'>
-                        {user.avatar ? (
-                           <img
-                              className='object-cover rounded-full w-9 h-9'
-                              src={user.avatar}
-                              alt={user.name}
-                           />
-                        ) : (
-                           <div className='overflow-hidden w-[34px] h-[34px] rounded-full'>
-                              <Avatar variant='beam' size={34} name={user.name}></Avatar>
-                           </div>
-                        )}
+                        <Avatar
+                           variant='beam'
+                           size={34}
+                           name={user.name}
+                           src={user.avatar}
+                        />
                      </Menu.Button>
                   </div>
                   <Transition

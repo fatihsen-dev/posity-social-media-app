@@ -114,12 +114,10 @@ export default function Post() {
                               alt={post.owner.name}
                            />
                         ) : (
-                           <div className='overflow-hidden w-10 h-10 rounded-full'>
-                              <Avatar
-                                 variant='beam'
-                                 size={40}
-                                 name={post.owner.name}></Avatar>
-                           </div>
+                           <Avatar
+                              variant='beam'
+                              size={40}
+                              name={post.owner.name}></Avatar>
                         )}
                         <div className='flex flex-col'>
                            <p className='leading-4'>{post.owner.name}</p>
@@ -171,17 +169,14 @@ export default function Post() {
                                           }
                                        />
                                     ) : (
-                                       <div className='overflow-hidden w-7 h-7 rounded-full'>
-                                          <Avatar
-                                             variant='beam'
-                                             size={28}
-                                             name={
-                                                allUser.find(
-                                                   (user: any) =>
-                                                      user._id === comment.user
-                                                ).name
-                                             }></Avatar>
-                                       </div>
+                                       <Avatar
+                                          variant='beam'
+                                          size={28}
+                                          name={
+                                             allUser.find(
+                                                (user: any) => user._id === comment.user
+                                             ).name
+                                          }></Avatar>
                                     )}
                                     <div className='w-full text-sm text-mainDarkV1'>
                                        <div className='flex justify-between'>
