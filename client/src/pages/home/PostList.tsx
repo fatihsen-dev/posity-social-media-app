@@ -1,33 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { sendComment } from "../../axios";
-import { setAllpost } from "../../store/posts/post";
-import toast from "react-hot-toast";
 import Avatar from "../../components/Avatar";
 import { formatDateMin } from "../../helpers/dateFormat";
 import User from "../../components/Post/User";
 import Buttons from "../../components/Post/Buttons";
+import PostForm from "../../components/Post/PostForm";
 
 export default function PostList() {
    const { posts } = useSelector((state: RootState) => state.postsData);
    const { user, allUser } = useSelector((state: RootState) => state.userData);
-   const dispatch = useDispatch();
-
-   const commentHandle = async (e: any, post: string, user: string) => {
-      e.preventDefault();
-      try {
-         const postResponse = await sendComment({
-            text: e.target.text.value,
-            post,
-            user,
-         });
-         dispatch(setAllpost(postResponse.data));
-         e.target.text.value = "";
-      } catch (error) {
-         toast.error("Comment send error");
-      }
-   };
-
    return (
       <ul className='2xl:w-[700px] xl:w-[700px] lg:w-[700px] md:w-[700px] sm:w-auto w-auto gap-4 flex flex-col pb-10'>
          {posts &&
@@ -41,7 +22,7 @@ export default function PostList() {
                   />
                   <div className='flex flex-col gap-2 p-3'>
                      <User
-                        userid={allUser.find((user: any) => user._id === post.owner)}
+                        user={allUser.find((user: any) => user._id === post.owner)}
                         owner={post.owner}
                         date={post.createdAt}
                      />
@@ -65,23 +46,7 @@ export default function PostList() {
                      />
                   </div>
                   <div className='flex-col hidden pb-3 peer-checked:flex'>
-                     <form
-                        onSubmit={(e) => commentHandle(e, post._id, user._id)}
-                        className='flex flex-col items-start gap-3 px-3 xl:flex-row sm:flex-row'>
-                        <textarea
-                           onInput={(e: any) => {
-                              e.target.style.height = "52px";
-                              e.target.style.height = e.target.scrollHeight + "px";
-                           }}
-                           placeholder='Send comment...'
-                           className='placeholder-mainDarkV2/60 2xl:w-auto sm:w-auto w-full max-h-28 resize-none min-h-0-[100px] bg-lightV3 rounded-sm p-1.5 text-sm flex-1'
-                           name='text'></textarea>
-                        <button
-                           className='w-full py-1 ml-auto rounded-sm px-7 2xl:w-auto sm:w-auto bg-mainDarkV2 text-lightV1'
-                           type='submit'>
-                           Send
-                        </button>
-                     </form>
+                     <PostForm postId={post._id} userId={user._id} />
                      {post.comments.comment?.comments && (
                         <ul className='flex flex-col gap-5 p-3 pb-0'>
                            {post.comments.comment.comments.map(

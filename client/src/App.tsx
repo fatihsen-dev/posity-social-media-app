@@ -62,7 +62,7 @@ function App() {
                   <>
                      <Route path='/login' element={<Login />} />
                      <Route path='/register' element={<Register />} />
-                     <Route path='*' element={<div></div>}></Route>
+                     <Route path='*' element={<Loading user={user} />}></Route>
                   </>
                )}
             </Routes>
