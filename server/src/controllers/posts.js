@@ -1,8 +1,9 @@
-import { Post, postValidation, likeValidation, postidValidate } from "../models/post.js";
+import { Post, postValidation, likeValidation } from "../models/post.js";
 import { User } from "../models/user.js";
 import multer from "multer";
 import { Comment, commentValidation } from "../models/comment.js";
 import Joi from "joi";
+import JWT from "jsonwebtoken";
 let lastFileName = "";
 
 // multer settings
@@ -30,7 +31,7 @@ export const index = async (req, res) => {
    }
 };
 
-export const create = async (req, res) => {
+export const createPost = async (req, res) => {
    const { error } = postValidation(req.body);
    if (error) {
       return res.status(400).send({ message: error.details[0].message });
@@ -69,6 +70,45 @@ export const create = async (req, res) => {
    } catch (error) {
       console.log(error);
       return res.status(404).send({ message: "Server error" });
+   }
+};
+
+export const deletePost = async (req, res) => {
+   const { error } = Joi.object({
+      userid: Joi.string().min(24).max(24).required(),
+      postid: Joi.string().min(24).max(24).required(),
+      token: Joi.string().required(),
+   }).validate(req.body);
+
+   if (error) {
+      return res.status(400).send({ message: error.details[0].message });
+   }
+
+   try {
+      const user = await User.findById(req.body.userid);
+
+      if (req.body.token === user.token) {
+         try {
+            const post = await Post.findById(req.body.postid);
+
+            if (String(post.owner) === String(user._id) || user.admin === true) {
+               await Post.findByIdAndDelete(req.body.postid);
+
+               const posts = await Post.find()
+                  .sort({ createdAt: -1 })
+                  .select("likes comments text image owner createdAt")
+                  .populate("comments.comment", "-post -_id");
+               return res.send(posts);
+            } else {
+               return res.status(404).send({ message: "Deleting post failed" });
+            }
+         } catch (error) {
+            return res.status(404).send({ message: "Post not found" });
+         }
+      }
+      return res.status(404).send({ message: "Verify failed" });
+   } catch (error) {
+      return res.status(404).send({ message: "User not found" });
    }
 };
 

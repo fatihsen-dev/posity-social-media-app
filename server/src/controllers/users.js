@@ -7,7 +7,8 @@ export const index = async (req, res) => {
    try {
       const users = await User.find().select("name avatar");
       return res.status(200).send(users);
-   } catch (err) {
+   } catch (error) {
+      console.log(error);
       return res.status(500).send({ message: "Server Error!" });
    }
 };
@@ -37,8 +38,8 @@ export const login = async (req, res) => {
       await User.findByIdAndUpdate(_id, { token });
 
       return res.send({ _id, name, email, admin, token, avatar });
-   } catch (err) {
-      console.log(err);
+   } catch (error) {
+      console.log(error);
       return res.status(404).send({ message: "User not found" });
    }
 };
@@ -101,8 +102,8 @@ export const register = async (req, res) => {
 
       await user.save();
       return res.status(201).send(user);
-   } catch (err) {
-      console.log(err);
+   } catch (error) {
+      console.log(error);
       return res.status(500).send({ message: "Server Error!" });
    }
 };
@@ -112,8 +113,8 @@ export const getOneUser = async (req, res) => {
 
    try {
       const user = await User.findById(userid)
-         .select("-token -admin -password -updatedAt -__v")
-         .populate("posts.post", "-updatedAt -__v -owner", null, {
+         .select("-token -password -updatedAt -__v")
+         .populate("posts.post", "-updatedAt -__v", null, {
             sort: { createdAt: -1 },
          });
       return res.send(user);
