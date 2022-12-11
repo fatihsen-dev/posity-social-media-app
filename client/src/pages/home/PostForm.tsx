@@ -5,7 +5,7 @@ import { getAllPost, newPost } from "../../axios";
 import { useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { setAllpost } from "../../store/posts/post";
-import Avatar from "boring-avatars";
+import Avatar from "../../components/Avatar";
 import { NavLink } from "react-router-dom";
 
 export default function PostForm() {
@@ -43,17 +43,13 @@ export default function PostForm() {
          onSubmit={formHandle}
          className='flex flex-col w-full gap-3 p-3 rounded-sm bg-lightV1'>
          <div className='flex items-center gap-1'>
-            <NavLink className='flex items-center gap-1' to={`/user/${user._id}`}>
-               {user.avatar ? (
-                  <img
-                     src={user.avatar}
-                     alt={user.name}
-                     className='rounded-full w-9 h-9'
-                  />
-               ) : (
-                  <Avatar variant='beam' size={36} name={user.name}></Avatar>
-               )}
-               <span className='text-lg font-medium'>{user.name}</span>
+            <NavLink className='flex items-center gap-1.5' to={`/user/${user._id}`}>
+               <Avatar
+                  src={user.avatar}
+                  variant='beam'
+                  size={32}
+                  name={user.name}></Avatar>
+               <span className='font-medium'>{user.name}</span>
             </NavLink>
             <div className='flex items-center gap-3 ml-auto'>
                <input
