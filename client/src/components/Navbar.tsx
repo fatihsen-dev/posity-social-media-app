@@ -77,14 +77,12 @@ export default function Navbar() {
                            to={`user/${user._id}`}
                            className='flex items-center gap-3 p-2 transition-colors cursor-pointer hover:bg-mainDarkV2'
                            key={index}>
-                           {user.avatar && (
-                              <Avatar
-                                 variant='beam'
-                                 size={36}
-                                 name={user.name}
-                                 src={user.avatar}
-                              />
-                           )}
+                           <Avatar
+                              variant='beam'
+                              size={28}
+                              name={user.name}
+                              src={user.avatar}
+                           />
                            <span className='flex-1'>{user.name}</span>
                         </NavLink>
                      ))}
