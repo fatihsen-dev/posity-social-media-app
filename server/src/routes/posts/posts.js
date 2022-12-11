@@ -1,8 +1,9 @@
 import express from "express";
 import {
    comment,
-   create,
    createComment,
+   createPost,
+   deletePost,
    getOnePost,
    index,
    like,
@@ -18,7 +19,9 @@ router.get("/", index);
 
 router.get("/post/:postid", getOnePost);
 
-router.post("/create", upload.single("image"), create);
+router.post("/create", upload.single("image"), createPost);
+
+router.post("/delete", deletePost);
 
 router.post("/like", like);
 

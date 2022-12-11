@@ -19,12 +19,16 @@ export const register = async (formData: object) =>
 export const getAllUsers = async () => await HTTP.get("/users");
 
 // get profile page data
-export const getProfileUser = async (userid: any) =>
+export const getOneUser = async (userid: any) =>
    await HTTP.get(`/users/getoneuser/${userid}`);
 
 // New post
 export const newPost = async (formData: object) =>
    await HTTP.post("/posts/create", formData);
+
+// Delete post
+export const deletePost = async (formData: object) =>
+   await HTTP.post("/posts/delete", formData);
 
 // like post
 export const likePost = async (formData: object) =>
