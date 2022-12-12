@@ -21,7 +21,7 @@ export default function Post({ allUser, post, index, user }: IPost) {
                postid={post._id}
             />
             <div className='flex flex-col gap-1'>
-               <span>{post.text}</span>
+               <span className="text-ellipsis overflow-hidden">{post.text}</span>
                {post.image && (
                   <img
                      className='w-full rounded-sm'

@@ -92,7 +92,10 @@ export const deletePost = async (req, res) => {
             const post = await Post.findById(req.body.postid);
 
             if (String(post.owner) === String(user._id) || user.admin === true) {
-               await Post.findByIdAndDelete(req.body.postid);
+               const post = await Post.findByIdAndDelete(req.body.postid);
+               if (String(post.comments.comment) !== "undefined") {
+                  await Comment.findById(String(post.comments.comment));
+               }
 
                const posts = await Post.find()
                   .sort({ createdAt: -1 })
