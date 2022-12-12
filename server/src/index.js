@@ -1,17 +1,26 @@
 import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-const app = express();
 import mongoose from "mongoose";
 import cors from "cors";
 import usersRouter from "./routes/users/users.js";
 import postsRouter from "./routes/posts/posts.js";
+import rateLimit from "express-rate-limit";
+const app = express();
 
+const limiter = rateLimit({
+   windowMs: 30 * 60 * 1000,
+   max: 70,
+   standardHeaders: true,
+   legacyHeaders: false,
+});
+
+app.use(limiter);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("src/public"));
-dotenv.config();
 app.use(bodyParser.json());
 app.use(cors());
+dotenv.config();
 
 const port = process.env.port || 5000;
 
