@@ -9,7 +9,9 @@ interface propsType {
 
 export default function Avatar({ variant, name, size, src }: propsType) {
    return (
-      <div className='rounded-full overflow-hidden'>
+      <div
+         style={{ minWidth: size, minHeight: size }}
+         className='rounded-full overflow-hidden'>
          {src ? (
             <img
                style={{ width: size, height: size }}
