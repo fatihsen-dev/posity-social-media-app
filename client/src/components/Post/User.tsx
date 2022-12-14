@@ -34,6 +34,7 @@ export default function User({ postOwner, date, postid }: UserType) {
          toast.error("Gönderi silinemedi");
       }
    };
+   const editHandle = async () => {};
 
    return (
       <div className='flex justify-between'>
@@ -75,7 +76,9 @@ export default function User({ postOwner, date, postid }: UserType) {
                         </button>
                      </Menu.Item>
                      <Menu.Item>
-                        <button className='block w-full hover:bg-lightV4 transition-colors px-4 py-1 rounded-sm text-sm font-medium text-gray-700 text-start'>
+                        <button
+                           onClick={editHandle}
+                           className='block w-full hover:bg-lightV4 transition-colors px-4 py-1 rounded-sm text-sm font-medium text-gray-700 text-start'>
                            Edit
                         </button>
                      </Menu.Item>

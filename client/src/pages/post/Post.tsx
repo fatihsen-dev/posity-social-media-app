@@ -149,9 +149,7 @@ export default function Post() {
                         <>
                            {post.comments.comment.comments.map(
                               (comment: any, index: number) => (
-                                 <li
-                                    className='flex gap-2 p-2 rounded-sm bg-lightV3/70'
-                                    key={index}>
+                                 <li className='flex gap-2 p-2 rounded-sm ' key={index}>
                                     {allUser.find(
                                        (user: any) => user._id === comment.user
                                     ).avatar ? (

@@ -51,7 +51,7 @@ export default function Navbar() {
          <div className='container flex items-center justify-between w-full p-2 px-5 2xl:px-0 sm:px-0 h-14 bg-mainDarkV1 text-lightV1 gap-5'>
             <NavLink
                to='/'
-               className='text-[26px] font-semibold leading-8 flex-[.2] flex items-center'>
+               className='text-[26px] font-semibold leading-8 flex-[.1] flex items-center'>
                <span className='2xl:inline-block sm:inline-block hidden'>Posity</span>
                <img
                   className='2xl:hidden sm:hidden inline-block w-8 h-8'
@@ -88,17 +88,7 @@ export default function Navbar() {
                      ))}
                </ul>
             </div>
-            <div className='flex items-center gap-3 z-10 flex-[.2] justify-center'>
-               {/* <NavLink
-                  to='message'
-                  className='grid transition-colors rounded-full w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 place-items-center'>
-                  <TbMessageCircle className='text-xl' />
-               </NavLink>
-               <NavLink
-                  to='groups'
-                  className='grid transition-colors rounded-full w-9 h-9 bg-mainDarkV2 hover:bg-mainDarkV2/80 place-items-center'>
-                  <FaUserFriends className='text-xl' />
-               </NavLink> */}
+            <div className='flex items-center gap-3 z-10 flex-[.1] justify-center'>
                <Menu as='div' className='relative'>
                   <div>
                      <Menu.Button className='flex text-sm bg-gray-800 rounded-full'>

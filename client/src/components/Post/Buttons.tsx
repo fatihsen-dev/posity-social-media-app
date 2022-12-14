@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
@@ -23,8 +24,19 @@ export default function Buttons({
    index,
 }: IButtons) {
    const dispatch = useDispatch();
+   const [count, setCount] = useState<any>();
+   const [like, setLike] = useState(false);
+
+   useEffect(() => {
+      setCount(likeCount);
+      setLike(likedUser === -1 ? false : true);
+   }, []);
 
    const likehandle = async (postid: String) => {
+      setLike(!like);
+      like === true
+         ? setCount((prev: any) => prev - 1)
+         : setCount((prev: any) => prev + 1);
       try {
          const updatedPost = await likePost({ user: userId, post: postid });
          dispatch(setAllpost(updatedPost.data));
@@ -36,11 +48,11 @@ export default function Buttons({
          <button
             onClick={() => likehandle(postId)}
             className='flex items-center gap-2 rounded-sm bg-lightV3 group'>
-            <span className='hidden pl-2 2xl:inline-block sm:inline-block'>
-               {likeCount}
+            <span className='hidden pl-2 2xl:inline-block sm:inline-block tabular-nums'>
+               {count}
             </span>
             <div className='flex items-center gap-1 px-2 rounded-sm bg-lightV4'>
-               {likedUser !== -1 ? (
+               {like ? (
                   <BsHeartFill className='text-[#993333] transition-all group-hover:scale-110' />
                ) : (
                   <BsHeart className='transition-all group-hover:scale-110' />
