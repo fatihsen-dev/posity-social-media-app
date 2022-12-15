@@ -5,8 +5,12 @@ TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo("en-US");
 
 export const formatDate = (date: any) => {
-   return timeAgo.format(new Date(date));
+   if (date) {
+      return timeAgo.format(new Date(date));
+   }
 };
 export const formatDateMin = (date: any) => {
-   return timeAgo.format(new Date(date), "mini-now");
+   if (date) {
+      return timeAgo.format(new Date(date), "mini-now");
+   }
 };
