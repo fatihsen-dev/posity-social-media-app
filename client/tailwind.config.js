@@ -17,6 +17,7 @@ module.exports = {
          mainDarkV1: "#171717",
          mainDarkV2: "#262626",
          navyBlue: "#264653",
+         red: "#903749",
       },
    },
    plugins: [],
