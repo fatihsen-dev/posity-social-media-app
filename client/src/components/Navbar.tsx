@@ -54,7 +54,7 @@ export default function Navbar() {
                className='text-[26px] font-semibold leading-8 flex-[.1] flex items-center'>
                <span className='2xl:inline-block sm:inline-block hidden'>Posity</span>
                <img
-                  className='2xl:hidden sm:hidden inline-block w-8 h-8'
+                  className='2xl:hidden sm:hidden inline-block w-8 h-8 min-w-[32px] min-h-[32px]'
                   src='../logo192.png'
                   alt='.'
                />
