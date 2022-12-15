@@ -30,9 +30,13 @@ export const newPost = async (formData: object) =>
 export const deletePost = async (formData: object) =>
    await HTTP.post("/posts/delete", formData);
 
+// Update post
+export const updatePost = async (formData: object) =>
+   await HTTP.put("/posts/update", formData);
+
 // like post
 export const likePost = async (formData: object) =>
-   await HTTP.post("/posts/like", formData);
+   await HTTP.put("/posts/like", formData);
 
 // get posts
 export const getAllPost = async () => await HTTP.get("/posts");

@@ -21,7 +21,7 @@ export default function Profile() {
    return (
       <>
          {profileData ? (
-            <div className='flex gap-5 flex-col px-5 pt-5 2xl:flex-row lg:flex-row 2xl:gap-0 lg:gap-0 2xl:px-0 sm:px-0'>
+            <div className='flex gap-5 flex-col px-5 pt-5 2xl:flex-row lg:flex-row 2xl:gap-0 xl:gap-0 2xl:px-0 sm:px-0'>
                <div className='2xl:w-96 xl:w-80 lg:w-72 w-full bg-lightV1 flex flex-col'>
                   <div className='relative flex flex-col items-center justify-center'>
                      {profileData.banner ? (
@@ -90,7 +90,7 @@ export default function Profile() {
                </div>
                <div className='flex-1 h-full pb-5'>
                   {profileData.posts.count > 0 ? (
-                     <ul className='2xl:w-[80%] lg:w-[80%] w-full mx-auto flex flex-col gap-4 rounded-sm h-full'>
+                     <ul className='2xl:w-[800px] xl:w-[700px] lg:w-[600px] w-full mx-auto flex flex-col gap-4 rounded-sm h-full'>
                         {profileData.posts.post.map((post: any, index: number) => (
                            <Post
                               key={index}
@@ -103,7 +103,7 @@ export default function Profile() {
                      </ul>
                   ) : (
                      <>
-                        <ul className='2xl:w-[80%] lg:w-[80%] w-full mx-auto flex justify-center items-center flex-col gap-4 bg-lightV1 rounded-sm h-full'>
+                        <ul className='2xl:w-[800px] xl:w-[700px] lg:w-[600px] w-full mx-auto flex justify-center items-center flex-col gap-4 bg-lightV1 rounded-sm h-full'>
                            {username === user._id ? (
                               <PostForm />
                            ) : (

@@ -1,4 +1,4 @@
-import Avatar from "boring-avatars";
+import Avatar from "../../components/Avatar";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineShareAlt } from "react-icons/ai";
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import { getOnePost, likePost, sendComment } from "../../axios";
 import { formatDate, formatDateMin } from "../../helpers/dateFormat";
+import { FindUser } from "../../helpers/find";
 import { RootState } from "../../store";
 import { setAllpost } from "../../store/posts/post";
 
@@ -107,18 +108,12 @@ export default function Post() {
                      <NavLink
                         to={`/user/${post.owner._id}`}
                         className='flex gap-1.5 items-center'>
-                        {post.owner.avatar ? (
-                           <img
-                              className='object-cover w-10 h-10 rounded-full'
-                              src={post.owner.avatar}
-                              alt={post.owner.name}
-                           />
-                        ) : (
-                           <Avatar
-                              variant='beam'
-                              size={40}
-                              name={post.owner.name}></Avatar>
-                        )}
+                        <Avatar
+                           name={post.owner.name}
+                           src={post.owner.avatar}
+                           size={40}
+                           variant='bean'
+                        />
                         <div className='flex flex-col'>
                            <p className='leading-4'>{post.owner.name}</p>
                            <span className='text-sm text-mainDarkV1/50'>
@@ -149,44 +144,17 @@ export default function Post() {
                         <>
                            {post.comments.comment.comments.map(
                               (comment: any, index: number) => (
-                                 <li
-                                    className='flex gap-2 p-2 rounded-sm bg-lightV3/70'
-                                    key={index}>
-                                    {allUser.find(
-                                       (user: any) => user._id === comment.user
-                                    ).avatar ? (
-                                       <img
-                                          className='object-cover rounded-full w-7 h-7'
-                                          src={
-                                             allUser.find(
-                                                (user: any) => user._id === comment.user
-                                             ).avatar
-                                          }
-                                          alt={
-                                             allUser.find(
-                                                (user: any) => user._id === comment.user
-                                             ).name
-                                          }
-                                       />
-                                    ) : (
-                                       <Avatar
-                                          variant='beam'
-                                          size={28}
-                                          name={
-                                             allUser.find(
-                                                (user: any) => user._id === comment.user
-                                             ).name
-                                          }></Avatar>
-                                    )}
+                                 <li className='flex gap-2 p-2 rounded-sm ' key={index}>
+                                    <Avatar
+                                       name={post.owner.name}
+                                       src={FindUser(allUser, user._id)?.avatar}
+                                       size={40}
+                                       variant='bean'
+                                    />
                                     <div className='w-full text-sm text-mainDarkV1'>
                                        <div className='flex justify-between'>
                                           <span className='text-base font-medium'>
-                                             {
-                                                allUser.find(
-                                                   (user: any) =>
-                                                      user._id === comment.user
-                                                ).name
-                                             }
+                                             {FindUser(allUser, comment.user)?.name}
                                           </span>
                                           <span className='font-semibold text-mainDarkV1/50'>
                                              {formatDateMin(comment.createdAt)}

@@ -34,3 +34,28 @@ export interface IComments {
    createdAt: string;
    text: string;
 }
+
+export interface Posts {
+   likes: {
+      count: number;
+      users: Array<string>;
+   };
+   comments: {
+      count: number;
+      comment: {
+         comments: [
+            {
+               user: string;
+               text: string;
+               _id: string;
+               createdAt: string;
+            }
+         ];
+         __v: number;
+      } | null;
+   };
+   _id: string;
+   text: string;
+   owner: string;
+   createdAt: string;
+}

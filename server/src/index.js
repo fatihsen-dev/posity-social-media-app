@@ -15,7 +15,7 @@ const limiter = rateLimit({
    legacyHeaders: false,
 });
 
-app.use(limiter);
+// pp.use(limiter);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("src/public"));
 app.use(bodyParser.json());

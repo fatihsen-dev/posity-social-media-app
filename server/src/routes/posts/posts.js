@@ -7,6 +7,7 @@ import {
    getOnePost,
    index,
    like,
+   updatePost,
 } from "../../controllers/posts.js";
 import multer from "multer";
 import { storage } from "../../controllers/posts.js";
@@ -23,7 +24,9 @@ router.post("/create", upload.single("image"), createPost);
 
 router.post("/delete", deletePost);
 
-router.post("/like", like);
+router.put("/update", upload.single("image"), updatePost);
+
+router.put("/like", like);
 
 router.get("/comment", comment);
 

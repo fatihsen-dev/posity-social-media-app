@@ -1,5 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import PostUpdateComponent from "../components/PostUpdate";
+
 const Main = () => {
    return (
       <div className='flex flex-col w-full h-full'>
@@ -11,6 +13,7 @@ const Main = () => {
                </div>
             </div>
          </div>
+         <PostUpdateComponent />
       </div>
    );
 };

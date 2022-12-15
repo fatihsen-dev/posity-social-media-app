@@ -1,10 +1,15 @@
-import { Post, postValidation, likeValidation } from "../models/post.js";
+import {
+   Post,
+   postValidation,
+   likeValidation,
+   updateValidation,
+} from "../models/post.js";
 import { User } from "../models/user.js";
 import multer from "multer";
 import { Comment, commentValidation } from "../models/comment.js";
 import Joi from "joi";
-import JWT from "jsonwebtoken";
 let lastFileName = "";
+import { unlink } from "node:fs/promises";
 
 // multer settings
 export const storage = multer.diskStorage({
@@ -25,7 +30,7 @@ export const index = async (req, res) => {
          .select("likes comments text image owner createdAt")
          .populate("comments.comment", "-post -_id");
 
-      return res.status(200).send(posts);
+      return res.send(posts);
    } catch (err) {
       return res.status(404).send({ message: "Error!" });
    }
@@ -115,6 +120,45 @@ export const deletePost = async (req, res) => {
    }
 };
 
+export const updatePost = async (req, res) => {
+   const { error } = updateValidation(req.body);
+
+   if (error) {
+      return res.status(400).send({ message: error.details[0].message });
+   }
+   const { text, image, userid, postid, token } = req.body;
+
+   try {
+      const user = await User.findById(userid);
+      try {
+         const post = await Post.findById(postid);
+         if (user.token === token || user.admin === true) {
+            if (post.image) {
+               await unlink(`./src/public${post.image}`);
+               console.log("silindi");
+            }
+            await Post.findByIdAndUpdate(postid, {
+               text: text,
+               image: req.file
+                  ? `/images/post-images/${req.file.filename}`
+                  : image || null,
+            });
+            return res.send(
+               await Post.find()
+                  .sort({ createdAt: -1 })
+                  .select("likes comments text image owner createdAt")
+                  .populate("comments.comment", "-post -_id")
+            );
+         }
+         return res.status(500).send({ message: "Server error" });
+      } catch (error) {
+         return res.status(404).send({ message: "Post not found" });
+      }
+   } catch (error) {
+      return res.status(404).send({ message: "User not found" });
+   }
+};
+
 export const like = async (req, res) => {
    const { error } = likeValidation(req.body);
 
@@ -132,7 +176,7 @@ export const like = async (req, res) => {
 
          const filtered = getPost.likes.users.filter((u) => String(u._id) === user);
          if (filtered.length > 0) {
-            const updatedPost = await Post.findByIdAndUpdate(getPost._id, {
+            await Post.findByIdAndUpdate(getPost._id, {
                likes: {
                   count: getPost.likes.count - 1,
                   users: getPost.likes.users.filter((u) => String(u._id) !== user),
@@ -146,7 +190,7 @@ export const like = async (req, res) => {
             );
          }
 
-         const updatedPost = await Post.findByIdAndUpdate(getPost._id, {
+         await Post.findByIdAndUpdate(getPost._id, {
             likes: {
                count: getPost.likes.count + 1,
                users: [...getPost.likes.users, user],

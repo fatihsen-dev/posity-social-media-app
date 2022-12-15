@@ -1,14 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { User, AllUser } from "../../interface";
 
 export interface userState {
-   user: any;
-   allUser: any;
+   user: User;
+   allUser: Array<AllUser>;
 }
 
 const initialState: userState = {
-   user: null,
-   allUser: null,
+   user: {
+      _id: "",
+      name: "",
+      email: "",
+      avatar: "",
+      admin: false,
+      token: "",
+   },
+   allUser: [
+      {
+         _id: "",
+         name: "",
+         avatar: "",
+      },
+   ],
 };
 
 export const userReducer = createSlice({
@@ -23,7 +37,14 @@ export const userReducer = createSlice({
          state.allUser = action.payload;
       },
       userLogout: (state) => {
-         state.user = false;
+         state.user = {
+            _id: "",
+            name: "",
+            email: "",
+            avatar: "",
+            admin: false,
+            token: "",
+         };
          localStorage.removeItem("token");
       },
    },
