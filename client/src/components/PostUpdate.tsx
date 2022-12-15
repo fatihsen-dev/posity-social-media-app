@@ -2,24 +2,64 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import Avatar from "./Avatar";
 import { formatDate } from "../helpers/dateFormat";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
-import { setUpdatePost } from "../store/posts/post";
+import { setAllpost, setUpdatePost } from "../store/posts/post";
+import { updatePost } from "../axios";
 
 export default function PostUpdate() {
    const { postUpdate } = useSelector((state: RootState) => state.postsData);
    const dispatch = useDispatch();
+   const imgRef = useRef<any>();
 
    const { user, post } = postUpdate;
    const [text, setText] = useState("");
+   const [imgSrc, setImgSrc] = useState<string | null>("");
 
    const cencelHandle = () => {
       dispatch(setUpdatePost({ ...postUpdate, status: false }));
    };
 
+   const updateHandle = async (e: any) => {
+      e.preventDefault();
+      const formData = new FormData();
+      if (imgRef.current.files[0]) {
+         formData.append("image", imgRef.current.files[0]);
+      } else {
+         formData.append("image", `${imgSrc}`);
+      }
+      formData.append("text", text);
+      formData.append("userid", user.id);
+      formData.append("postid", post.id);
+      formData.append("token", user.token);
+      try {
+         const posts = await updatePost(formData);
+         dispatch(setAllpost(posts.data));
+         dispatch(setUpdatePost({ ...postUpdate, status: false }));
+      } catch (error) {
+         console.log(error);
+      }
+   };
+
+   const removeImageHandle = (e: any) => {
+      e.preventDefault();
+      setImgSrc("");
+   };
+
+   const fileHandle = (e: any) => {
+      if (e.target.files[0]) {
+         setImgSrc(URL.createObjectURL(e.target.files[0]));
+      }
+   };
+
    useEffect(() => {
       setText(post.text);
-   }, [post.text]);
+      if (post.image) {
+         setImgSrc(`${process.env.REACT_APP_API_URL}${post.image}`);
+      } else {
+         setImgSrc("");
+      }
+   }, [post]);
 
    return (
       <div
@@ -44,15 +84,38 @@ export default function PostUpdate() {
                   onChange={(e) => setText(e.target.value)}
                   value={text}
                />
-               {post.image && (
-                  <img
-                     className='rounded-sm'
-                     src={process.env.REACT_APP_API_URL + post.image}
-                     alt='Resim bulunamadı'
-                  />
+               {imgSrc && (
+                  <img className='rounded-sm' src={imgSrc} alt='Resim bulunamadı' />
                )}
-               <div className='flex'>
-                  <button className='ml-auto px-10 py-1.5 rounded-sm bg-navyBlue hover:bg-navyBlue/90 transition-colors text-lightV1'>
+               <div className='flex justify-between items-center'>
+                  <div className='flex items-center justify-between h-full gap-2'>
+                     <div>
+                        <input
+                           onChange={fileHandle}
+                           ref={imgRef}
+                           className='hidden'
+                           accept='image/*'
+                           id='updateImage'
+                           type='file'
+                           name='image'
+                        />
+                        <label
+                           className='px-10 h-9 grid place-items-center border border-lightV4 rounded-sm'
+                           htmlFor='updateImage'>
+                           Select File
+                        </label>
+                     </div>
+                     {imgSrc && (
+                        <button
+                           onClick={removeImageHandle}
+                           className='bg-red text-lightV1 px-4 h-9 grid place-items-center rounded-sm'>
+                           Remove Image
+                        </button>
+                     )}
+                  </div>
+                  <button
+                     onClick={updateHandle}
+                     className='ml-auto px-10 py-1.5 rounded-sm bg-navyBlue hover:bg-navyBlue/90 transition-colors text-lightV1'>
                      Edit
                   </button>
                </div>
