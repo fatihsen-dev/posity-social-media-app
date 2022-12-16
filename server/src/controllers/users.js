@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const index = async (req, res) => {
    try {
-      const users = await User.find().select("name avatar");
+      const users = await User.find().sort({ createdAt: 1 }).select("name avatar");
       return res.status(200).send(users);
    } catch (error) {
       console.log(error);
