@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 interface TLoading {
-   user?: null | false | object;
+   status?: null | false | object;
 }
 
-export default function Loading({ user }: TLoading) {
+export default function Loading({ status }: TLoading) {
    const navigate = useNavigate();
 
    useEffect(() => {
-      user === false && navigate("login");
-   }, [user]);
+      if (status === false) {
+         navigate("login");
+      }
+   }, [status]);
 
    return (
       <div className='absolute inset-0 z-10 grid w-full h-full bg-lightV1 place-items-center'>
