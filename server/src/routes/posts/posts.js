@@ -24,9 +24,9 @@ router.post("/create", upload.single("image"), createPost);
 
 router.post("/delete", deletePost);
 
-router.put("/update", upload.single("image"), updatePost);
+router.post("/update", upload.single("image"), updatePost);
 
-router.put("/like", like);
+router.post("/like", like);
 
 router.get("/comment", comment);
 

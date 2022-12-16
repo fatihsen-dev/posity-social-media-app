@@ -17,7 +17,7 @@ import Loading from "./components/Loading";
 import Post from "./pages/post/Post";
 import { setAllpost } from "./store/posts/post";
 function App() {
-   const { user } = useSelector((state: RootState) => state.userData);
+   const { user, status } = useSelector((state: RootState) => state.userData);
    const navigate = useNavigate();
    const dispatch = useDispatch();
 
@@ -31,15 +31,39 @@ function App() {
                const postResponse = await getAllPost();
                const allUsersResponse = await getAllUsers();
                dispatch(allUserFunc(allUsersResponse.data));
-               dispatch(userLogin(userResponse.data));
+               dispatch(userLogin({ user: userResponse.data, status: true }));
                dispatch(setAllpost(postResponse.data));
             } catch (error) {
-               dispatch(userLogin(false));
+               dispatch(
+                  userLogin({
+                     user: {
+                        _id: "",
+                        name: "",
+                        email: "",
+                        avatar: "",
+                        admin: false,
+                        token: "",
+                     },
+                     status: false,
+                  })
+               );
                navigate("/login");
             }
          })();
       } else {
-         dispatch(userLogin(false));
+         dispatch(
+            userLogin({
+               user: {
+                  _id: "",
+                  name: "",
+                  email: "",
+                  avatar: "",
+                  admin: false,
+                  token: "",
+               },
+               status: false,
+            })
+         );
       }
    }, []);
 
@@ -47,7 +71,7 @@ function App() {
       <>
          <div className='h-full'>
             <Routes>
-               {user ? (
+               {status ? (
                   <>
                      <Route path='/' element={<Main />}>
                         <Route index element={<Home />} />
@@ -66,7 +90,7 @@ function App() {
                   </>
                )}
             </Routes>
-            {user === null && <Loading />}
+            {status === null && <Loading />}
          </div>
          <Toaster position='top-left' reverseOrder={false} />
       </>

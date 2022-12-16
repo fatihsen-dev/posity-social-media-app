@@ -3,11 +3,13 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { User, AllUser } from "../../interface";
 
 export interface userState {
+   status: null | false | true;
    user: User;
    allUser: Array<AllUser>;
 }
 
 const initialState: userState = {
+   status: null,
    user: {
       _id: "",
       name: "",
@@ -30,13 +32,15 @@ export const userReducer = createSlice({
    initialState,
    reducers: {
       userLogin: (state, action: PayloadAction<any>) => {
-         state.user = action.payload;
+         state.user = action.payload.user;
+         state.status = action.payload.status;
          localStorage.setItem("token", state.user.token);
       },
       allUserFunc: (state, action: PayloadAction<any>) => {
          state.allUser = action.payload;
       },
       userLogout: (state) => {
+         state.status = false;
          state.user = {
             _id: "",
             name: "",
