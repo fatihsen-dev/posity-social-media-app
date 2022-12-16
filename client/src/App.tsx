@@ -17,7 +17,7 @@ import Loading from "./components/Loading";
 import Post from "./pages/post/Post";
 import { setAllpost } from "./store/posts/post";
 function App() {
-   const { user, status } = useSelector((state: RootState) => state.userData);
+   const { status } = useSelector((state: RootState) => state.userData);
    const navigate = useNavigate();
    const dispatch = useDispatch();
 
@@ -86,7 +86,7 @@ function App() {
                   <>
                      <Route path='/login' element={<Login />} />
                      <Route path='/register' element={<Register />} />
-                     <Route path='*' element={<Loading user={user} />}></Route>
+                     <Route path='*' element={<Loading status={status} />}></Route>
                   </>
                )}
             </Routes>
