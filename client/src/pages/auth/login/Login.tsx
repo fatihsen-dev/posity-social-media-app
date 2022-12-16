@@ -22,7 +22,12 @@ export default function Login() {
          toast.success("Login success");
          const allUsersResponse = await getAllUsers();
          const postResponse = await getAllPost();
-         dispatch(userLogin(response.data));
+         dispatch(
+            userLogin({
+               user: response.data,
+               status: true,
+            })
+         );
          dispatch(setAllpost(postResponse.data));
          dispatch(allUserFunc(allUsersResponse.data));
          navigate("/");
