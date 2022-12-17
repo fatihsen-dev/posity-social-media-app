@@ -1,2 +1,2 @@
-export * from "./Post-interface";
-export * from "./User-interface";
+export * from "./Post";
+export * from "./User";

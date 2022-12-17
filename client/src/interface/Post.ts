@@ -59,3 +59,19 @@ export interface Posts {
    owner: string;
    createdAt: string;
 }
+
+export interface UpdatePost {
+   status: boolean;
+   user: {
+      id: string;
+      token: string;
+      avatar: string | null;
+      name: string;
+   };
+   post: {
+      text: string;
+      image: string | null;
+      id: string;
+      date: string;
+   };
+}

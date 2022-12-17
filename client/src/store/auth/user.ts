@@ -1,31 +1,6 @@
+import { initialState } from "./initialState";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { User, AllUser } from "../../interface";
-
-export interface userState {
-   status: null | false | true;
-   user: User;
-   allUser: Array<AllUser>;
-}
-
-const initialState: userState = {
-   status: null,
-   user: {
-      _id: "",
-      name: "",
-      email: "",
-      avatar: "",
-      admin: false,
-      token: "",
-   },
-   allUser: [
-      {
-         _id: "",
-         name: "",
-         avatar: "",
-      },
-   ],
-};
 
 export const userReducer = createSlice({
    name: "userReducer",
@@ -55,5 +30,4 @@ export const userReducer = createSlice({
 });
 
 export const { userLogin, userLogout, allUserFunc } = userReducer.actions;
-
 export default userReducer.reducer;

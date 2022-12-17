@@ -30,7 +30,7 @@ export default function Buttons({
    useEffect(() => {
       setCount(likeCount);
       setLike(likedUser === -1 ? false : true);
-   }, []);
+   }, [likeCount, likedUser]);
 
    const likehandle = async (postid: String) => {
       setLike(!like);

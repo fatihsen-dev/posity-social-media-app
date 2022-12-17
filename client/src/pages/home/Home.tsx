@@ -1,5 +1,6 @@
 import PostForm from "./PostForm";
 import PostList from "./PostList";
+
 export default function Home() {
    return (
       <div className='flex flex-col items-center h-full gap-4 pt-5 mx-5'>

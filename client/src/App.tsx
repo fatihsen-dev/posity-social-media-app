@@ -1,3 +1,6 @@
+// import Message from "./pages/message/Message";
+// import Groups from "./pages/groups/Groups";
+
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Main from "./pages";
@@ -5,8 +8,6 @@ import Home from "./pages/home/Home";
 import Login from "./pages/auth/login/Login";
 import Register from "./pages/auth/register/Register";
 import Profile from "./pages/profile/Profile";
-// import Message from "./pages/message/Message";
-// import Groups from "./pages/groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./store/index";
 import NotFound from "./pages/NotFound";
@@ -76,9 +77,9 @@ function App() {
                      <Route path='/' element={<Main />}>
                         <Route index element={<Home />} />
                         <Route path='user/:username' element={<Profile />} />
+                        <Route path='post/:postid' element={<Post />} />
                         {/* <Route path='message' element={<Message />} />
                         <Route path='groups' element={<Groups />} /> */}
-                        <Route path='post/:postid' element={<Post />} />
                      </Route>
                      <Route path='*' element={<NotFound />} />
                   </>

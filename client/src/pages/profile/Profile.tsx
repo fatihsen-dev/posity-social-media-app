@@ -18,6 +18,8 @@ export default function Profile() {
       })();
    }, [username]);
 
+   console.log(profileData);
+
    return (
       <>
          {profileData ? (
