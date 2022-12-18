@@ -7,16 +7,7 @@ export const index = async (req, res) => {
    try {
       const users = await User.find()
          .sort({ createdAt: 1 })
-         .select("-token -updatedAt -__v -password")
-         .populate({
-            path: "posts.post",
-            select: "-updatedAt -__v -owner",
-            sort: { createdAt: -1 },
-            populate: {
-               path: "comments.comment",
-               select: "-__v",
-            },
-         });
+         .select("-token -updatedAt -__v -password");
       return res.status(200).send(users);
    } catch (error) {
       console.log(error);

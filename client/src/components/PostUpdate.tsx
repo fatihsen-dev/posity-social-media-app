@@ -73,7 +73,7 @@ export default function PostUpdate() {
       <div
          style={postUpdate.status ? { pointerEvents: "auto", opacity: 1 } : {}}
          className='opacity-0 transition-all duration-200 ease-in-out pointer-events-none absolute z-20 inset-0 bg-mainDarkV1/20 grid place-items-center'>
-         <div className='bg-lightV1 rounded-sm p-5 flex flex-col gap-3 w-2/5'>
+         <div className='bg-lightV1 rounded-sm p-5 flex flex-col gap-3 2xl:w-[700px] 2xl:h-auto md:w-[700px] md:h-auto w-full h-full'>
             <div className='flex items-center gap-1.5'>
                <Avatar src={user.avatar} size={32} variant='beam' name={user.name} />
                <div className='flex flex-col leading-4'>
@@ -93,7 +93,11 @@ export default function PostUpdate() {
                   value={text}
                />
                {imgSrc && (
-                  <img className='rounded-sm' src={imgSrc} alt='Resim bulunamadı' />
+                  <img
+                     className='rounded-sm max-h-[300px] object-cover'
+                     src={imgSrc}
+                     alt='Resim bulunamadı'
+                  />
                )}
                <div className='flex justify-between items-center'>
                   <div className='flex items-center justify-between h-full gap-2'>
