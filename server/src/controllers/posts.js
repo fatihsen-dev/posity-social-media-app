@@ -98,8 +98,16 @@ export const deletePost = async (req, res) => {
 
             if (String(post.owner) === String(user._id) || user.admin === true) {
                const post = await Post.findByIdAndDelete(req.body.postid);
-               if (String(post.comments.comment) !== "undefined") {
-                  await Comment.findById(String(post.comments.comment));
+               await User.findByIdAndUpdate(user._id, {
+                  posts: {
+                     count: user.posts.count - 1,
+                     post: user.posts.post.filter(
+                        (pst) => String(pst) !== String(post._id)
+                     ),
+                  },
+               });
+               if (post.comments.comment) {
+                  await Comment.findByIdAndDelete(String(post.comments.comment));
                }
 
                const posts = await Post.find()

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { formatDate } from "../../helpers/dateFormat";
 import Avatar from "../Avatar";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -6,10 +6,9 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { deletePost } from "../../axios";
-import { setAllpost } from "../../store/posts/post";
+import { deletePost, getOneUser } from "../../axios";
+import { setAllpost, setProfileData } from "../../store/posts/post";
 import { toast } from "react-hot-toast";
-import { useEffect } from "react";
 
 interface UserType {
    postOwner: {
@@ -26,11 +25,17 @@ export default function User({ postOwner, date, postid, editHandle }: UserType) 
    const { user } = useSelector((state: RootState) => state.userData);
    const token = localStorage.getItem("token");
    const dispatch = useDispatch();
+   const { userid } = useParams();
 
    const deletePostHandle = async () => {
       try {
          const posts = await deletePost({ userid: user._id, postid, token });
          dispatch(setAllpost(posts.data));
+
+         if (userid) {
+            const rofileDataResponse = await getOneUser(userid);
+            dispatch(setProfileData(rofileDataResponse.data));
+         }
       } catch (error) {
          console.log(error);
          toast.error("Gönderi silinemedi");

@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import postİmageButton from "../../assets/images/postimagebutton.svg";
-import { getAllPost, newPost } from "../../axios";
+import { getAllPost, getOneUser, newPost } from "../../axios";
 import { useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { setAllpost } from "../../store/posts/post";
+import { setAllpost, setProfileData } from "../../store/posts/post";
 import Avatar from "../../components/Avatar";
 import { NavLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function PostForm() {
    const { user } = useSelector((state: RootState) => state.userData);
@@ -14,6 +15,7 @@ export default function PostForm() {
    const dispatch = useDispatch();
    const inputRef = useRef<any>();
    const textareaRef = useRef<any>();
+   const { userid } = useParams();
 
    const formHandle = async (e: any) => {
       e.preventDefault();
@@ -29,6 +31,10 @@ export default function PostForm() {
          textareaRef.current.value = "";
          const postResponse = await getAllPost();
          dispatch(setAllpost(postResponse.data));
+         if (userid) {
+            const rofileDataResponse = await getOneUser(userid);
+            dispatch(setProfileData(rofileDataResponse.data));
+         }
       } catch (error) {}
    };
 

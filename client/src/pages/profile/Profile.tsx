@@ -1,22 +1,24 @@
 import { NavLink, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getOneUser } from "../../axios";
 import { RootState } from "../../store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PostForm from "../home/PostForm";
 import Post from "../../components/Post/Post";
 import Avatar from "../../components/Avatar";
+import { setProfileData } from "../../store/posts/post";
 
 export default function Profile() {
-   const [profileData, setProfileData] = useState<any>(null);
-   const { username } = useParams();
+   const disapatch = useDispatch();
+   const { userid } = useParams();
    const { user, allUser } = useSelector((state: RootState) => state.userData);
+   const { profileData } = useSelector((state: RootState) => state.postsData);
    useEffect(() => {
       (async () => {
-         const rofileDataResponse = await getOneUser(username);
-         setProfileData(rofileDataResponse.data);
+         const rofileDataResponse = await getOneUser(userid);
+         disapatch(setProfileData(rofileDataResponse.data));
       })();
-   }, [username]);
+   }, [userid]);
 
    return (
       <>
@@ -104,7 +106,7 @@ export default function Profile() {
                   ) : (
                      <>
                         <ul className='2xl:w-[800px] xl:w-[700px] lg:w-[600px] w-full mx-auto flex justify-center items-center flex-col gap-4 bg-lightV1 rounded-sm h-full'>
-                           {username === user._id ? (
+                           {userid === user._id ? (
                               <PostForm />
                            ) : (
                               <div className='p-10'>

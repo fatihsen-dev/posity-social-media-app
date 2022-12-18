@@ -1,46 +1,7 @@
+import { initialState } from "./initialState";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Posts } from "../../interface";
-
-interface UpdatePost {
-   status: boolean;
-   user: {
-      id: string;
-      token: string;
-      avatar: string | null;
-      name: string;
-   };
-   post: {
-      text: string;
-      image: string | null;
-      id: string;
-      date: string;
-   };
-}
-
-export interface userState {
-   posts: Array<Posts>;
-   postUpdate: UpdatePost;
-}
-
-const initialState: userState = {
-   posts: [],
-   postUpdate: {
-      status: false,
-      user: {
-         id: "",
-         name: "",
-         avatar: "",
-         token: "",
-      },
-      post: {
-         text: "",
-         image: "",
-         id: "",
-         date: "",
-      },
-   },
-};
+import { UpdatePost } from "../../interface";
 
 export const userReducer = createSlice({
    name: "postReducer",
@@ -52,9 +13,11 @@ export const userReducer = createSlice({
       setUpdatePost: (state, action: PayloadAction<UpdatePost>) => {
          state.postUpdate = action.payload;
       },
+      setProfileData: (state, action: PayloadAction<UpdatePost>) => {
+         state.profileData = action.payload;
+      },
    },
 });
 
-export const { setAllpost, setUpdatePost } = userReducer.actions;
-
+export const { setAllpost, setUpdatePost, setProfileData } = userReducer.actions;
 export default userReducer.reducer;
