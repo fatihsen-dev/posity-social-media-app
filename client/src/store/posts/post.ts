@@ -13,8 +13,11 @@ export const userReducer = createSlice({
       setUpdatePost: (state, action: PayloadAction<UpdatePost>) => {
          state.postUpdate = action.payload;
       },
+      setProfileData: (state, action: PayloadAction<UpdatePost>) => {
+         state.profileData = action.payload;
+      },
    },
 });
 
-export const { setAllpost, setUpdatePost } = userReducer.actions;
+export const { setAllpost, setUpdatePost, setProfileData } = userReducer.actions;
 export default userReducer.reducer;

@@ -4,13 +4,16 @@ import Avatar from "./Avatar";
 import { formatDate } from "../helpers/dateFormat";
 import { useState, useEffect, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
-import { setAllpost, setUpdatePost } from "../store/posts/post";
-import { updatePost } from "../axios";
+import { setAllpost, setProfileData, setUpdatePost } from "../store/posts/post";
+import { getOneUser, updatePost } from "../axios";
+import { useParams } from "react-router-dom";
 
 export default function PostUpdate() {
    const { postUpdate } = useSelector((state: RootState) => state.postsData);
+   const disapatch = useDispatch();
    const dispatch = useDispatch();
    const imgRef = useRef<any>();
+   const { userid } = useParams();
 
    const { user, post } = postUpdate;
    const [text, setText] = useState("");
@@ -36,6 +39,11 @@ export default function PostUpdate() {
          const posts = await updatePost(formData);
          dispatch(setAllpost(posts.data));
          dispatch(setUpdatePost({ ...postUpdate, status: false }));
+
+         if (userid) {
+            const rofileDataResponse = await getOneUser(userid);
+            disapatch(setProfileData(rofileDataResponse.data));
+         }
       } catch (error) {
          console.log(error);
       }

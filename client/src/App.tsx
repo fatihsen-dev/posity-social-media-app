@@ -17,7 +17,8 @@ import { Control, getAllPost, getAllUsers } from "./axios";
 import Loading from "./components/Loading";
 import Post from "./pages/post/Post";
 import { setAllpost } from "./store/posts/post";
-function App() {
+
+export default function App() {
    const { status } = useSelector((state: RootState) => state.userData);
    const navigate = useNavigate();
    const dispatch = useDispatch();
@@ -76,7 +77,7 @@ function App() {
                   <>
                      <Route path='/' element={<Main />}>
                         <Route index element={<Home />} />
-                        <Route path='user/:username' element={<Profile />} />
+                        <Route path='user/:userid' element={<Profile />} />
                         <Route path='post/:postid' element={<Post />} />
                         {/* <Route path='message' element={<Message />} />
                         <Route path='groups' element={<Groups />} /> */}
@@ -97,5 +98,3 @@ function App() {
       </>
    );
 }
-
-export default App;
