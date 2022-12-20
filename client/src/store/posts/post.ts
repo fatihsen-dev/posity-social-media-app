@@ -10,7 +10,10 @@ export const userReducer = createSlice({
       setAllpost: (state, action: PayloadAction<any>) => {
          state.posts = action.payload;
       },
-      setUpdatePost: (state, action: PayloadAction<UpdatePost>) => {
+      setUpdateData: (state, action: PayloadAction<UpdatePost>) => {
+         state.postUpdate = action.payload;
+      },
+      setShareData: (state, action: PayloadAction<UpdatePost>) => {
          state.postUpdate = action.payload;
       },
       setProfileData: (state, action: PayloadAction<UpdatePost>) => {
@@ -19,5 +22,5 @@ export const userReducer = createSlice({
    },
 });
 
-export const { setAllpost, setUpdatePost, setProfileData } = userReducer.actions;
+export const { setAllpost, setUpdateData, setProfileData } = userReducer.actions;
 export default userReducer.reducer;

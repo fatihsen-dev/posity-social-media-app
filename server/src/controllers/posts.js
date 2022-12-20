@@ -3,6 +3,7 @@ import {
    postValidation,
    likeValidation,
    updateValidation,
+   shareValidation,
 } from "../models/post.js";
 import { User } from "../models/user.js";
 import multer from "multer";
@@ -23,17 +24,22 @@ export const storage = multer.diskStorage({
    },
 });
 
-export const index = async (req, res) => {
+const getAllPost = async (req, res) => {
    try {
       const posts = await Post.find()
          .sort({ createdAt: -1 })
          .select("likes comments text image owner createdAt")
-         .populate("comments.comment", "-post -_id");
+         .populate("comments.comment", "-post -_id")
+         .populate("shared");
 
       return res.send(posts);
    } catch (err) {
-      return res.status(404).send({ message: "Error!" });
+      return res.status(404).send({ message: "Server error" });
    }
+};
+
+export const index = async (req, res) => {
+   getAllPost(req, res);
 };
 
 export const createPost = async (req, res) => {
@@ -75,6 +81,39 @@ export const createPost = async (req, res) => {
    } catch (error) {
       console.log(error);
       return res.status(404).send({ message: "Server error" });
+   }
+};
+
+export const sharePost = async (req, res) => {
+   const { error } = shareValidation(req.body);
+   if (error) {
+      return res.status(400).send({ message: error.details[0].message });
+   }
+   const { owner, postid, text } = req.body;
+   try {
+      const user = await User.findById(owner);
+
+      if (user) {
+         try {
+            const post = await Post.findById(postid);
+
+            await Post.create({
+               text,
+               owner,
+               shared: post._id,
+            });
+
+            getAllPost(req, res);
+         } catch (error) {
+            console.log(error);
+            return res.status(404).send({ message: "Post not found" });
+         }
+      } else {
+         return res.status(404).send({ message: "User not found" });
+      }
+   } catch (error) {
+      console.log(error);
+      return res.status(500).send({ message: "Server error" });
    }
 };
 

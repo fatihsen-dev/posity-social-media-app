@@ -5,7 +5,7 @@ import User from "./User";
 import { IPost } from "../../interface";
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { setUpdatePost } from "../../store/posts/post";
+import { setUpdateData } from "../../store/posts/post";
 import { FindPost } from "../../helpers/find";
 
 export default function Post({ allUser, post, index, user }: IPost) {
@@ -13,7 +13,7 @@ export default function Post({ allUser, post, index, user }: IPost) {
    const dispatch = useDispatch();
    const editHandle = async () => {
       dispatch(
-         setUpdatePost({
+         setUpdateData({
             status: true,
             user: {
                id: user._id,

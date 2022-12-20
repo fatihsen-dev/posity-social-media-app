@@ -4,7 +4,7 @@ import Avatar from "./Avatar";
 import { formatDate } from "../helpers/dateFormat";
 import { useState, useEffect, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
-import { setAllpost, setProfileData, setUpdatePost } from "../store/posts/post";
+import { setAllpost, setProfileData, setUpdateData } from "../store/posts/post";
 import { getOneUser, updatePost } from "../axios";
 import { useParams } from "react-router-dom";
 
@@ -20,7 +20,7 @@ export default function PostUpdate() {
    const [imgSrc, setImgSrc] = useState<string | null>("");
 
    const cencelHandle = () => {
-      dispatch(setUpdatePost({ ...postUpdate, status: false }));
+      dispatch(setUpdateData({ ...postUpdate, status: false }));
    };
 
    const updateHandle = async (e: any) => {
@@ -38,7 +38,7 @@ export default function PostUpdate() {
       try {
          const posts = await updatePost(formData);
          dispatch(setAllpost(posts.data));
-         dispatch(setUpdatePost({ ...postUpdate, status: false }));
+         dispatch(setUpdateData({ ...postUpdate, status: false }));
 
          if (userid) {
             const rofileDataResponse = await getOneUser(userid);
