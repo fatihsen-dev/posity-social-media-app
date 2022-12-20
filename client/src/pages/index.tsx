@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import PostUpdateComponent from "../components/PostUpdate";
+import PostUpdate from "../components/PostUpdate";
+import PostShare from "../components/PostShare";
 
 const Main = () => {
    return (
@@ -13,10 +14,10 @@ const Main = () => {
                </div>
             </div>
          </div>
-         <PostUpdateComponent />
+         <PostUpdate />
+         <PostShare />
       </div>
    );
 };
 
 export default Main;
-
