@@ -11,6 +11,11 @@ export interface IPost {
             comments: Array<object>;
          };
       };
+      share: {
+         count: number;
+         users: Array<string>;
+      };
+      shared: any;
       _id: string;
       text: string;
       owner: string;
@@ -54,7 +59,9 @@ export interface Posts {
          __v: number;
       } | null;
    };
+   share?: any;
    _id: string;
+   shared: string;
    text: string;
    owner: string;
    createdAt: string;

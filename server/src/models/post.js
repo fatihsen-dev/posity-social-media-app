@@ -15,6 +15,10 @@ const postSchema = new Schema(
          count: { type: Number, default: 0 },
          comment: { type: Schema.Types.ObjectId, ref: "Comment" },
       },
+      share: {
+         count: { type: Number, default: 0 },
+         users: [{ type: Schema.Types.ObjectId, ref: "User" }],
+      },
    },
    { timestamps: true }
 );

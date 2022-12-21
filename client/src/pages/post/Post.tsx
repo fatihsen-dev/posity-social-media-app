@@ -12,7 +12,6 @@ import { FindUser } from "../../helpers/find";
 import { RootState } from "../../store";
 import { setAllpost } from "../../store/posts/post";
 
-// <pre className='w-full overflow-auto'>{JSON.stringify(post, null, 2)}</pre>
 export default function Post() {
    const [post, setPost] = useState<Object | any>(null);
    const { user, allUser } = useSelector((state: RootState) => state.userData);
@@ -112,7 +111,7 @@ export default function Post() {
                            name={post.owner.name}
                            src={post.owner.avatar}
                            size={40}
-                           variant='bean'
+                           variant='beam'
                         />
                         <div className='flex flex-col'>
                            <p className='leading-4'>{post.owner.name}</p>

@@ -88,7 +88,11 @@ export default function PostUpdate() {
             </div>
             <form className='flex flex-col gap-3'>
                <textarea
-                  className='resize-none p-1 border border-lightV4 rounded-sm h-28'
+                  onInput={(e: any) => {
+                     e.target.style.height = "112px";
+                     e.target.style.height = e.target.scrollHeight + "px";
+                  }}
+                  className='resize-none max-h-40 p-1 border border-lightV4 rounded-sm h-28'
                   onChange={(e) => setText(e.target.value)}
                   value={text}
                />

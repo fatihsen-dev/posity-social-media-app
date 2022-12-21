@@ -28,7 +28,7 @@ const getAllPost = async (req, res) => {
    try {
       const posts = await Post.find()
          .sort({ createdAt: -1 })
-         .select("likes comments text image owner createdAt")
+         .select("likes comments text image owner createdAt share")
          .populate("comments.comment", "-post -_id")
          .populate("shared");
 
@@ -102,7 +102,18 @@ export const sharePost = async (req, res) => {
                owner,
                shared: post._id,
             });
-
+            await Post.findByIdAndUpdate(post._id, {
+               share: {
+                  count: post.share.count + 1,
+                  users: [...post.share.users, user._id],
+               },
+            });
+            await User.findByIdAndUpdate(user._id, {
+               posts: {
+                  count: user.posts.count + 1,
+                  post: [...user.posts.post, post._id],
+               },
+            });
             getAllPost(req, res);
          } catch (error) {
             console.log(error);
@@ -151,7 +162,7 @@ export const deletePost = async (req, res) => {
 
                const posts = await Post.find()
                   .sort({ createdAt: -1 })
-                  .select("likes comments text image owner createdAt")
+                  .select("likes comments text image owner createdAt share")
                   .populate("comments.comment", "-post -_id");
                return res.send(posts);
             } else {
@@ -193,7 +204,7 @@ export const updatePost = async (req, res) => {
             return res.send(
                await Post.find()
                   .sort({ createdAt: -1 })
-                  .select("likes comments text image owner createdAt")
+                  .select("likes comments text image owner createdAt share")
                   .populate("comments.comment", "-post -_id")
             );
          }
@@ -232,8 +243,9 @@ export const like = async (req, res) => {
             return res.send(
                await Post.find()
                   .sort({ createdAt: -1 })
-                  .select("likes comments text image owner createdAt")
+                  .select("likes comments text image owner createdAt share")
                   .populate("comments.comment", "-post -_id")
+                  .populate("shared")
             );
          }
 
@@ -246,8 +258,9 @@ export const like = async (req, res) => {
          return res.send(
             await Post.find()
                .sort({ createdAt: -1 })
-               .select("likes comments text image owner createdAt")
+               .select("likes comments text image owner createdAt share")
                .populate("comments.comment", "-post -_id")
+               .populate("shared")
          );
       } catch (error) {
          res.status(404).send({ message: "User not found" });
@@ -268,6 +281,7 @@ export const getOnePost = async (req, res) => {
       const post = await Post.findById(postid)
          .select("-updatedAt")
          .populate("comments.comment")
+         .populate("shared")
          .populate("owner", "-password -updatedAt -__v -token -admin");
 
       if (post) {
@@ -324,7 +338,7 @@ export const createComment = async (req, res) => {
                return res.send(
                   await Post.find()
                      .sort({ createdAt: -1 })
-                     .select("likes comments text image owner createdAt")
+                     .select("likes comments text image owner createdAt share")
                      .populate("comments.comment", "-post -_id")
                );
             } catch (error) {
