@@ -66,7 +66,7 @@ export default function PostShare() {
                   e.target.style.height = e.target.scrollHeight + "px";
                }}
                name='textarea'
-               placeholder='Write smothing...'
+               placeholder='Write something...'
                className='placeholder-grayV2 max-h-40 resize-none border rounded-sm py-1 px-1.5 border-grayV2/50'></textarea>
             <div className='border border-grayV2/50 bg-lightV2/80 p-2 rounded-sm flex flex-col gap-2'>
                <div className='flex items-center gap-1'>
@@ -94,7 +94,7 @@ export default function PostShare() {
                <button
                   onClick={cencelHandle}
                   className='ml-auto bg-red text-lightV1 px-5 rounded-sm py-1'>
-                  Cencel
+                  Cancel
                </button>
                <button className='bg-navyBlue text-lightV1 px-5 rounded-sm py-1'>
                   Share
