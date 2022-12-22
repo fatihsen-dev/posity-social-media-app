@@ -6,12 +6,13 @@ import { IPost } from "../../interface";
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setUpdateData } from "../../store/posts/post";
-import { FindPost, FindUser } from "../../helpers/find";
+import { FindPost } from "../../helpers/find";
 import Avatar from "../Avatar";
 import { NavLink } from "react-router-dom";
 import { formatDate } from "../../helpers/dateFormat";
 
 export default function Post({ allUser, post, index, user }: IPost) {
+   console.log(post);
    const { posts } = useSelector((state: RootState) => state.postsData);
    const dispatch = useDispatch();
    const editHandle = async () => {

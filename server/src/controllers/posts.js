@@ -64,7 +64,7 @@ export const createPost = async (req, res) => {
                   post: [...user.posts.post, post._id],
                },
             });
-            return res.send(post);
+            getAllPost(req, res);
          } else {
             const post = await Post.create({ text, owner });
             await User.findByIdAndUpdate(user._id, {
@@ -73,7 +73,7 @@ export const createPost = async (req, res) => {
                   post: [...user.posts.post, post._id],
                },
             });
-            return res.send(post);
+            getAllPost(req, res);
          }
       } else {
          return res.status(500).send({ message: "Post create error" });
@@ -97,9 +97,9 @@ export const sharePost = async (req, res) => {
          try {
             const post = await Post.findById(postid);
 
-            await Post.create({
+            const sharedPost = await Post.create({
                text,
-               owner,
+               owner: user._id,
                shared: post._id,
             });
             await Post.findByIdAndUpdate(post._id, {
@@ -111,7 +111,7 @@ export const sharePost = async (req, res) => {
             await User.findByIdAndUpdate(user._id, {
                posts: {
                   count: user.posts.count + 1,
-                  post: [...user.posts.post, post._id],
+                  post: [...user.posts.post, sharedPost._id],
                },
             });
             getAllPost(req, res);
