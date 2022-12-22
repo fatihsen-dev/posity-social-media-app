@@ -5,15 +5,19 @@ import User from "./User";
 import { IPost } from "../../interface";
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { setUpdatePost } from "../../store/posts/post";
+import { setUpdateData } from "../../store/posts/post";
 import { FindPost } from "../../helpers/find";
+import Avatar from "../Avatar";
+import { NavLink } from "react-router-dom";
+import { formatDate } from "../../helpers/dateFormat";
 
 export default function Post({ allUser, post, index, user }: IPost) {
+   console.log(post);
    const { posts } = useSelector((state: RootState) => state.postsData);
    const dispatch = useDispatch();
    const editHandle = async () => {
       dispatch(
-         setUpdatePost({
+         setUpdateData({
             status: true,
             user: {
                id: user._id,
@@ -52,11 +56,59 @@ export default function Post({ allUser, post, index, user }: IPost) {
                      alt='Resim bulunamadı !'
                   />
                )}
+               {post.shared && (
+                  <NavLink
+                     to={"/post/" + post.shared._id}
+                     className='border flex flex-col gap-1 border-lightV4 p-2 rounded-sm bg-lightV3'>
+                     <div className='flex items-center gap-1.5'>
+                        <Avatar
+                           variant='beam'
+                           name={
+                              allUser.find(
+                                 (user: { _id: string }) => user._id === post.shared.owner
+                              ).name
+                           }
+                           size={30}
+                           src={
+                              allUser.find(
+                                 (user: { _id: string }) => user._id === post.shared.owner
+                              ).avatar
+                           }
+                        />
+                        <div className='flex flex-col leading-4 translate-y-0.5'>
+                           <span className='font-medium'>
+                              {
+                                 allUser.find(
+                                    (user: { _id: string }) =>
+                                       user._id === post.shared.owner
+                                 ).name
+                              }
+                           </span>
+                           <span className='text-xs text-grayV2'>
+                              {formatDate(post.shared.createdAt)}
+                           </span>
+                        </div>
+                     </div>
+                     <div className='flex flex-col gap-1'>
+                        <span>{post.shared.text}</span>
+                        {post.shared.image && (
+                           <img
+                              className='rounded-sm'
+                              src={process.env.REACT_APP_API_URL + post.shared.image}
+                              alt='Not found'
+                           />
+                        )}
+                     </div>
+                  </NavLink>
+               )}
             </div>
             <Buttons
+               post={post}
+               user={allUser.find((user: { _id: string }) => user._id === post.owner)}
                likedUser={post.likes.users.indexOf(user._id)}
                likeCount={post.likes.count}
                commentCount={post.comments.count}
+               shareCount={post?.share?.count}
                userId={user._id}
                postId={post._id}
                index={index}

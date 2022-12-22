@@ -34,6 +34,10 @@ export const deletePost = async (formData: object) =>
 export const updatePost = async (formData: object) =>
    await HTTP.post("/posts/update", formData);
 
+// Share post
+export const sharePost = async (formData: object) =>
+   await HTTP.post("/posts/share", formData);
+
 // like post
 export const likePost = async (formData: object) =>
    await HTTP.post("/posts/like", formData);

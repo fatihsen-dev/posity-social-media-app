@@ -25,11 +25,10 @@ export default function PostForm() {
          formData.append("image", e.target.image.files[0]);
          formData.append("text", e.target.text.value);
          formData.append("owner", user._id);
-         await newPost(formData);
+         const postResponse = await newPost(formData);
          setFileName("");
          inputRef.current.value = "";
          textareaRef.current.value = "";
-         const postResponse = await getAllPost();
          dispatch(setAllpost(postResponse.data));
          if (userid) {
             const rofileDataResponse = await getOneUser(userid);

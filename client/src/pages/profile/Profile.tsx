@@ -16,6 +16,7 @@ export default function Profile() {
    useEffect(() => {
       (async () => {
          const rofileDataResponse = await getOneUser(userid);
+         console.log(rofileDataResponse.data);
          disapatch(setProfileData(rofileDataResponse.data));
       })();
    }, [userid]);
@@ -91,7 +92,7 @@ export default function Profile() {
                   )}
                </div>
                <div className='flex-1 h-full pb-5'>
-                  {profileData.posts.count > 0 ? (
+                  {profileData.posts.post.length > 0 ? (
                      <ul className='2xl:w-[800px] xl:w-[700px] lg:w-[600px] w-full mx-auto flex flex-col gap-4 rounded-sm h-full'>
                         {profileData.posts.post.map((post: any, index: number) => (
                            <Post

@@ -6,6 +6,7 @@ const postSchema = new Schema(
       text: { type: String, required: true },
       image: { type: String, default: null },
       owner: { type: Schema.Types.ObjectId, ref: "User" },
+      shared: { type: Schema.Types.ObjectId, ref: "Post", default: null },
       likes: {
          count: { type: Number, default: 0 },
          users: [{ type: Schema.Types.ObjectId, ref: "User" }],
@@ -13,6 +14,10 @@ const postSchema = new Schema(
       comments: {
          count: { type: Number, default: 0 },
          comment: { type: Schema.Types.ObjectId, ref: "Comment" },
+      },
+      share: {
+         count: { type: Number, default: 0 },
+         users: [{ type: Schema.Types.ObjectId, ref: "User" }],
       },
    },
    { timestamps: true }
@@ -23,6 +28,14 @@ export const postValidation = (post) => {
       text: Joi.string().min(8).max(600).required(),
       image: Joi.string().max(255),
       owner: Joi.string().required(),
+   }).validate(post);
+};
+
+export const shareValidation = (post) => {
+   return Joi.object({
+      text: Joi.string().min(8).max(600).required(),
+      owner: Joi.string().required(),
+      postid: Joi.string().min(24).max(24).required(),
    }).validate(post);
 };
 

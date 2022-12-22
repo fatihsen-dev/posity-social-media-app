@@ -116,8 +116,11 @@ export const getOneUser = async (req, res) => {
    try {
       const user = await User.findById(userid)
          .select("-token -password -updatedAt -__v")
-         .populate("posts.post", "-updatedAt -__v", null, {
-            sort: { createdAt: -1 },
+         .populate({
+            path: "posts.post",
+            select: "-updatedAt -__v",
+            options: { sort: { createdAt: -1 } },
+            populate: { path: "shared" },
          });
       return res.send(user);
    } catch (error) {

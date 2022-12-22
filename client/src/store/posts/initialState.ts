@@ -31,7 +31,6 @@ export const initialState: userState = {
          id: "",
          name: "",
          avatar: "",
-         token: "",
       },
       post: {
          text: "",

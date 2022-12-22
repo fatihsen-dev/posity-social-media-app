@@ -3,6 +3,7 @@ import {
    postValidation,
    likeValidation,
    updateValidation,
+   shareValidation,
 } from "../models/post.js";
 import { User } from "../models/user.js";
 import multer from "multer";
@@ -23,17 +24,22 @@ export const storage = multer.diskStorage({
    },
 });
 
-export const index = async (req, res) => {
+const getAllPost = async (req, res) => {
    try {
       const posts = await Post.find()
          .sort({ createdAt: -1 })
-         .select("likes comments text image owner createdAt")
-         .populate("comments.comment", "-post -_id");
+         .select("likes comments text image owner createdAt share")
+         .populate("comments.comment", "-post -_id")
+         .populate("shared");
 
       return res.send(posts);
    } catch (err) {
-      return res.status(404).send({ message: "Error!" });
+      return res.status(404).send({ message: "Server error" });
    }
+};
+
+export const index = async (req, res) => {
+   getAllPost(req, res);
 };
 
 export const createPost = async (req, res) => {
@@ -58,7 +64,7 @@ export const createPost = async (req, res) => {
                   post: [...user.posts.post, post._id],
                },
             });
-            return res.send(post);
+            getAllPost(req, res);
          } else {
             const post = await Post.create({ text, owner });
             await User.findByIdAndUpdate(user._id, {
@@ -67,7 +73,7 @@ export const createPost = async (req, res) => {
                   post: [...user.posts.post, post._id],
                },
             });
-            return res.send(post);
+            getAllPost(req, res);
          }
       } else {
          return res.status(500).send({ message: "Post create error" });
@@ -75,6 +81,50 @@ export const createPost = async (req, res) => {
    } catch (error) {
       console.log(error);
       return res.status(404).send({ message: "Server error" });
+   }
+};
+
+export const sharePost = async (req, res) => {
+   const { error } = shareValidation(req.body);
+   if (error) {
+      return res.status(400).send({ message: error.details[0].message });
+   }
+   const { owner, postid, text } = req.body;
+   try {
+      const user = await User.findById(owner);
+
+      if (user) {
+         try {
+            const post = await Post.findById(postid);
+
+            const sharedPost = await Post.create({
+               text,
+               owner: user._id,
+               shared: post._id,
+            });
+            await Post.findByIdAndUpdate(post._id, {
+               share: {
+                  count: post.share.count + 1,
+                  users: [...post.share.users, user._id],
+               },
+            });
+            await User.findByIdAndUpdate(user._id, {
+               posts: {
+                  count: user.posts.count + 1,
+                  post: [...user.posts.post, sharedPost._id],
+               },
+            });
+            getAllPost(req, res);
+         } catch (error) {
+            console.log(error);
+            return res.status(404).send({ message: "Post not found" });
+         }
+      } else {
+         return res.status(404).send({ message: "User not found" });
+      }
+   } catch (error) {
+      console.log(error);
+      return res.status(500).send({ message: "Server error" });
    }
 };
 
@@ -112,7 +162,7 @@ export const deletePost = async (req, res) => {
 
                const posts = await Post.find()
                   .sort({ createdAt: -1 })
-                  .select("likes comments text image owner createdAt")
+                  .select("likes comments text image owner createdAt share")
                   .populate("comments.comment", "-post -_id");
                return res.send(posts);
             } else {
@@ -154,7 +204,7 @@ export const updatePost = async (req, res) => {
             return res.send(
                await Post.find()
                   .sort({ createdAt: -1 })
-                  .select("likes comments text image owner createdAt")
+                  .select("likes comments text image owner createdAt share")
                   .populate("comments.comment", "-post -_id")
             );
          }
@@ -193,8 +243,9 @@ export const like = async (req, res) => {
             return res.send(
                await Post.find()
                   .sort({ createdAt: -1 })
-                  .select("likes comments text image owner createdAt")
+                  .select("likes comments text image owner createdAt share")
                   .populate("comments.comment", "-post -_id")
+                  .populate("shared")
             );
          }
 
@@ -207,8 +258,9 @@ export const like = async (req, res) => {
          return res.send(
             await Post.find()
                .sort({ createdAt: -1 })
-               .select("likes comments text image owner createdAt")
+               .select("likes comments text image owner createdAt share")
                .populate("comments.comment", "-post -_id")
+               .populate("shared")
          );
       } catch (error) {
          res.status(404).send({ message: "User not found" });
@@ -229,6 +281,7 @@ export const getOnePost = async (req, res) => {
       const post = await Post.findById(postid)
          .select("-updatedAt")
          .populate("comments.comment")
+         .populate("shared")
          .populate("owner", "-password -updatedAt -__v -token -admin");
 
       if (post) {
@@ -285,7 +338,7 @@ export const createComment = async (req, res) => {
                return res.send(
                   await Post.find()
                      .sort({ createdAt: -1 })
-                     .select("likes comments text image owner createdAt")
+                     .select("likes comments text image owner createdAt share")
                      .populate("comments.comment", "-post -_id")
                );
             } catch (error) {
