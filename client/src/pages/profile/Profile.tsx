@@ -16,7 +16,6 @@ export default function Profile() {
    useEffect(() => {
       (async () => {
          const rofileDataResponse = await getOneUser(userid);
-         console.log(rofileDataResponse.data);
          disapatch(setProfileData(rofileDataResponse.data));
       })();
    }, [userid]);
