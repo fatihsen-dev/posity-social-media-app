@@ -16,6 +16,7 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("src/public"));
 app.use(bodyParser.json());
