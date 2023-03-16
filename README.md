@@ -1,6 +1,6 @@
 # Posity Social Media App
 
-Posity uygulaması bildiğim ve öğrendiğim teknolojileri pekiştirmek için yaptığım bir sosyal medya projesidir. İnsanların gönderi paylaşabildiği, gönderi beğenebildiği, yorum yapabildiği ve diğer kullanıcılarında gönderilerini paylaşabildiğiniz bir fullstack uygulamadır.
+Posity is a full-stack application that I created to reinforce the technologies that I know and have learned. It is a social media platform where users can share posts, like and comment on posts, and also repost other users' posts.
 
 <br/>
 
