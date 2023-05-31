@@ -5,9 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const index = async (req, res) => {
    try {
-      const users = await User.find()
-         .sort({ createdAt: 1 })
-         .select("-token -updatedAt -__v -password");
+      const users = await User.find().sort({ createdAt: 1 }).select("-token -updatedAt -__v -password");
       return res.status(200).send(users);
    } catch (error) {
       console.log(error);
@@ -48,7 +46,7 @@ export const login = async (req, res) => {
 
 export const userControl = async (req, res) => {
    const { token } = req.body;
-   const decoded = jwt.verify(token, "testKey", (error, decoded) => {
+   const decoded = jwt.verify(token, process.env.jwtToken, (error, decoded) => {
       if (error) {
          return { message: "Error" };
       }
@@ -58,9 +56,7 @@ export const userControl = async (req, res) => {
    try {
       const user = await User.findById(decoded._id);
       if (user.token == token) {
-         const user = await User.findById(decoded._id).select(
-            "_id name email admin token avatar"
-         );
+         const user = await User.findById(decoded._id).select("_id name email admin token avatar");
          return res.send(user);
       } else {
          return res.status(406).send({ message: "Token invalid" });
