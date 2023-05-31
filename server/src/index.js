@@ -23,13 +23,13 @@ app.use(bodyParser.json());
 app.use(cors());
 dotenv.config();
 
-const port = process.env.port || 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 
-app.listen(port, () => {
-   console.log(`Server listen ${port}`);
+app.listen(PORT, () => {
+   console.log(`Server listen ${PORT}`);
 });
 
 (async () => {
