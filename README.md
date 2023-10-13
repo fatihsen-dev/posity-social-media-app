@@ -31,7 +31,7 @@ Posity is a full-stack application that I created to reinforce the technologies 
 ### Setup
 
 ```bash
-git clone link
+git clone https://github.com/fatihsen-dev/posity-social-media-app.git
 ```
 
 ```bash
